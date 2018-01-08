@@ -12,6 +12,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -46,12 +47,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(42.24050829999999, -8.721182399999975);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        // Puntero por defecto con permisos de administrador
+        LatLng castelao = new LatLng(42.23661386151706, -8.714480996131897);
+        mMap.addMarker(new MarkerOptions().position(castelao).title("Estás aquí Daniel Castelao").icon(BitmapDescriptorFactory.fromResource(R.drawable.horda)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(castelao));
 
-        // Controles UI
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
@@ -71,18 +72,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.getUiSettings().setZoomControlsEnabled(true);
         //mMap.setMyLocationEnabled(true);
         // Marcadores
-        mMap.addMarker(new MarkerOptions().position(new LatLng(42.24050829999999, -8.721182399999975)));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(42.23661386151706, -8.714480996131897)));
 
-        LatLng latLng = new LatLng(42.4299199, -8.644587000000001);
+        LatLng latLng = new LatLng(42.237439526686515, -8.714226186275482);//La Fayette
 
-        MarkerOptions markerOptions =
-                new MarkerOptions()
-                        .position(latLng)
-                        .title("Casa de la Celulosa. Droga")
-                        .snippet("Fundador: Miguesan")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+        googleMap.addMarker(new MarkerOptions()
+                .position(latLng)
+                .title("Pista 1. El inicio.")
+                .snippet("Fundador: pargibay 6150")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pandariam)));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
-        Marker marker = googleMap.addMarker(markerOptions);
+
+        LatLng latLng1 = new LatLng(42.237706320945556, -8.715687990188599);//GaliPizza
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(latLng1)
+                .title("Pista 2. La Penúltima.")
+                .snippet("Fundador: pargibay 6150")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.cataclysm)));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng1));
+
+        LatLng latLng2 = new LatLng(42.238956026405795, -8.71614396572113);//Parada Bus Arenal
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(latLng2)
+                .title("Pista 3. Gran Final.")
+                .snippet("Fundador: pargibay 6150")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.legion)));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng2));
 
     }
 }
