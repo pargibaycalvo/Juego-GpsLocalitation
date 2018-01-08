@@ -38,7 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Puntero por defecto con permisos de administrador
         LatLng castelao = new LatLng(42.23661386151706, -8.714480996131897);
-        mMap.addMarker(new MarkerOptions().position(castelao).title("Estás aquí Daniel Castelao").icon(BitmapDescriptorFactory.fromResource(R.drawable.horda)));
+        mMap.addMarker(new MarkerOptions().position(castelao).title("Orgricastelao (DanielCastelao)").icon(BitmapDescriptorFactory.fromResource(R.drawable.horda)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(castelao));
 
 
@@ -67,7 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         googleMap.addMarker(new MarkerOptions()
                 .position(latLng)
-                .title("Pista 1. El inicio.")
+                .title("Mision 1. Encuentra a Sha de la Ira")
                 .snippet("Fundador: pargibay 6150")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.pandariam)));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -76,7 +76,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         googleMap.addMarker(new MarkerOptions()
                 .position(latLng1)
-                .title("Pista 2. La Penúltima.")
+                .title("Mision 2. Habla con Gamon para llegar a Legion")
                 .snippet("Fundador: pargibay 6150")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.cataclysm)));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng1));
@@ -85,7 +85,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         googleMap.addMarker(new MarkerOptions()
                 .position(latLng2)
-                .title("Pista 3. Gran Final.")
+                .title("Mision 3. Elimina a Titan de Argus")
                 .snippet("Fundador: pargibay 6150")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.legion)));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng2));
