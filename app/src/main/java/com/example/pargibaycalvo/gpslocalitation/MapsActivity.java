@@ -68,47 +68,48 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         latLng = new LatLng(42.237439526686515, -8.714226186275482);//La Fayette
 
-        googleMap.addMarker(new MarkerOptions()
+        mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .title("Mision 1. Encuentra a Sha de la Ira")
                 .snippet("Fundador: pargibay 6150")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.pandariam)));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        googleMap.setOnInfoWindowClickListener(this);
+        mMap.setOnInfoWindowClickListener(this);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
 
         latLng1 = new LatLng(42.237706320945556, -8.715687990188599);//GaliPizza
 
-        googleMap.addMarker(new MarkerOptions()
+        mMap.addMarker(new MarkerOptions()
                 .position(latLng1)
                 .title("Mision 2. Habla con Gamon para llegar a Legion")
                 .snippet("Fundador: pargibay 6150")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.cataclysm)));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng1));
+        mMap.setOnInfoWindowClickListener(this);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng1));
 
         latLng2 = new LatLng(42.238956026405795, -8.71614396572113);//Parada Bus Arenal
 
-        googleMap.addMarker(new MarkerOptions()
+        mMap.addMarker(new MarkerOptions()
                 .position(latLng2)
                 .title("Mision 3. Elimina a Titan de Argus")
                 .snippet("Fundador: pargibay 6150")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.legion)));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng2));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng2));
+        mMap.setOnInfoWindowClickListener(this);
 
     }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
         if (marker.equals(latLng)) {
-
             PandariaDialogFragment.newInstance(marker.getTitle(),
-                    getString(R.string.history_pandaria_wow))
+                    getString(R.string.pandaria_full_snippet))
                     .show(getSupportFragmentManager(), null);
         }
         else if (marker.equals(latLng1)){
-
-                PandariaDialogFragment.newInstance(marker.getTitle(),
-                        getString(R.string.history_cataclysm_wow))
-                        .show(getSupportFragmentManager(), null);
+            PandariaDialogFragment.newInstance(marker.getTitle(),
+                    getString(R.string.history_cataclysm_wow))
+                    .show(getSupportFragmentManager(), null);
         }
         else if (marker.equals(latLng2)){
             PandariaDialogFragment.newInstance(marker.getTitle(),
