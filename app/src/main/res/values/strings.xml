@@ -2,10 +2,8 @@
     <string name="app_name">GpsLocalitation</string>
     <string name="title_activity_maps">Map</string>
     <string name="pandaria_full_snippet">La historia de pandaria en Orgricastelao</string>
-    <string name="history_cataclysm_wow">La historia de cataclysm en Orgricastelao</string>
-    <string name="history_legion_wow">La historia de legion en Orgricastelao</string>
-    <string name="history_orgricastelao_wow">La historia de Orgricastelao</string>
-
-
+    <string name="cataclysm_full_snippet">La historia de cataclysm en Orgricastelao</string>
+    <string name="legion_full_snippet">La historia de legion en Orgricastelao</string>
+    <string name="orgricastelao_full_snippet">La historia de Orgricastelao</string>
 
 </resources>

@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
-public class PandariaDialogFragment extends DialogFragment {
+public class WowDialogFragment extends DialogFragment {
 
     public static final String ARGUMENTO_TITLE = "TITLE";
     public static final String ARGUMENTO_FULL_SNIPPET = "FULL_SNIPPET";
@@ -15,11 +15,11 @@ public class PandariaDialogFragment extends DialogFragment {
     private String title;
     private String fullSnippet;
 
-    public PandariaDialogFragment() {
+    public WowDialogFragment() {
     }
 
-    public static PandariaDialogFragment newInstance(String title, String fullSnippet) {
-        PandariaDialogFragment fragment = new PandariaDialogFragment();
+    public static WowDialogFragment newInstance(String title, String fullSnippet) {
+        WowDialogFragment fragment = new WowDialogFragment();
         Bundle b = new Bundle();
         b.putString(ARGUMENTO_TITLE, title);
         b.putString(ARGUMENTO_FULL_SNIPPET, fullSnippet);
