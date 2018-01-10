@@ -50,6 +50,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        miUbicacion();
 
         // Puntero por defecto con permisos de administrador ORGRICASTELAO
         castelao = new LatLng(42.23661386151706, -8.714480996131897);
