@@ -1,13 +1,18 @@
 package com.example.pargibaycalvo.gpslocalitation;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,11 +28,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private Marker marker;
+    private Marker marcador;
     private LatLng latLng;
     private LatLng latLng1;
     private LatLng latLng2;
     private LatLng castelao;
+    double lat = 0.0;
+    double lon = 0.0;
     private static final int LOCATION_REQUEST_CODE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +145,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    //Ventana de información 
+    //Ventana de información
     @Override
     public void onInfoWindowClick(Marker marker) {
         if (marker.equals(latLng)) {
@@ -163,4 +172,67 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             System.out.println("Error");
         }
     }
+
+
+    //Posicion Actual del Usuario (conectarse vía GPS)
+    private void localizacionActual(double lat, double lon){
+        LatLng coordenadas= new LatLng(lat,lon);
+        CameraUpdate miUbi= CameraUpdateFactory.newLatLngZoom(coordenadas, 16);
+        if(marcador!=null)marcador.remove();
+        marcador=mMap.addMarker(new MarkerOptions()
+                .position(coordenadas)
+                .title("Tu posicion actual")
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher_round)));
+        mMap.animateCamera(miUbi);
+    }
+
+    private void actualizarUbicacion(Location localitation){
+        if(localitation!=null){
+            lat=localitation.getLatitude();
+            lon=localitation.getLongitude();
+            localizacionActual(lat,lon);
+        }
+    }
+
+    LocationListener locListener = new LocationListener(){
+
+
+        @Override
+        public void onLocationChanged(Location location) {
+            actualizarUbicacion(location);
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
+
+    private void miUbicacion(){
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED){
+            return;
+        }
+
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        actualizarUbicacion(location);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 15000, 0, locListener);
+
+    }
+
+
+
+
 }
