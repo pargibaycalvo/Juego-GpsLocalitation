@@ -7,10 +7,12 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,8 +26,18 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
+    int MAX_VOLUME = 100; //volumen máximo de referencia
+    int soundVolume = 90; //volumen que queremos poner
+    float volume = (float) (1 - (Math.log(MAX_VOLUME - soundVolume) / Math.log(MAX_VOLUME)));
+    public static final int INTERVALO = 2000; //2 segundos para salir
+    public long tiempoPrimerClick;
+
+    private MediaPlayer musicafondo;
     private GoogleMap mMap;
     private Marker marker;
     private Marker marcador;
@@ -33,9 +45,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng latLng1;
     private LatLng latLng2;
     private LatLng castelao;
+    private LatLng coordenadas;
     double lat = 0.0;
     double lon = 0.0;
     private static final int LOCATION_REQUEST_CODE = 1;
+
+    private LatLng p1,p2,p3;
 
 
     @Override
@@ -45,6 +60,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //musica de fondo para la app
+        musicafondo = MediaPlayer.create(this, R.raw.orgricaste);
+        musicafondo.setLooping(true);
+        musicafondo.setVolume(volume, volume);
+        new Timer().schedule(new TimerTask(){
+            @Override
+            public void run() {
+                musicafondo.start();
+            }
+        }, 1000);
     }
 
     @Override
@@ -177,7 +203,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //Posicion Actual del Usuario (conectarse vía GPS)
     private void localizacionActual(double lat, double lon){
-        LatLng coordenadas= new LatLng(lat,lon);
+        coordenadas= new LatLng(lat,lon);
         CameraUpdate miUbi= CameraUpdateFactory.newLatLngZoom(coordenadas, 16);
         if(marcador!=null)marcador.remove();
         marcador=mMap.addMarker(new MarkerOptions()
@@ -231,6 +257,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         actualizarUbicacion(location);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 15000, 0, locListener);
 
+    }
+
+    private void localizacionPistas() {
+        final MediaPlayer pandaria = MediaPlayer.create(this, R.raw.panda);
+        final MediaPlayer cataclysm = MediaPlayer.create(this, R.raw.cata);
+        final MediaPlayer legion = MediaPlayer.create(this, R.raw.leg);
+
+        if (coordenadas == latLng) {
+            musicafondo.stop();
+            pandaria.start();
+        } else if (coordenadas == latLng1) {
+            musicafondo.stop();
+            cataclysm.start();
+        } else if (coordenadas == latLng2) {
+            musicafondo.stop();
+            legion.start();
+        }
+    }
+
+    //confirmacion al salir de la app con sonido
+    @Override
+    public void onBackPressed(){
+
+        if (tiempoPrimerClick + INTERVALO > System.currentTimeMillis()){
+            super.onBackPressed();
+            return;
+        }else{
+            Toast.makeText(this, "Por la Horda", Toast.LENGTH_SHORT).show();
+            musicafondo.stop();
+        }
+        tiempoPrimerClick = System.currentTimeMillis();
     }
 
 
