@@ -1,6 +1,7 @@
 package com.example.pargibaycalvo.gpslocalitation;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -8,10 +9,13 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
+import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -31,35 +35,55 @@ import java.util.TimerTask;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
 
-    int MAX_VOLUME = 100; //volumen máximo de referencia
-    int soundVolume = 90; //volumen que queremos poner
+    //Declaraciones, musica de fondo y tiempo de respuesta en salir de la app
+    int MAX_VOLUME = 100;
+    int soundVolume = 90;
     float volume = (float) (1 - (Math.log(MAX_VOLUME - soundVolume) / Math.log(MAX_VOLUME)));
     public static final int INTERVALO = 2000; //2 segundos para salir
     public long tiempoPrimerClick;
 
+    //Declaraciones varias del programa
     private MediaPlayer musicafondo;
     private GoogleMap mMap;
-    private Marker marker;
     private Marker marcador;
-    private LatLng latLng;
-    private LatLng latLng1;
-    private LatLng latLng2;
-    private LatLng castelao;
-    private LatLng coordenadas;
+    private LatLng latLng, latLng1, latLng2, castelao, coordenadas;
+    private LatLng latLngAl, latLngAl1, latLngAl2, latLngAl3, latLngAl4, latLngAl5, latLngAl6, latLngAl7;
+    private TextView lblLatitud, lblLongitud;
     double lat = 0.0;
     double lon = 0.0;
     private static final int LOCATION_REQUEST_CODE = 1;
 
-    private LatLng p1,p2,p3;
+    //Declaraciones varias para la detección de coordenadas GPS
+    private static final String TAG = "gpslog";
+    private LocationManager mLocMgr;
+    private static final long MIN_CAMBIO_DISTANCIA_PARA_UPDATES = (long) 1; // 1 metro
+    private static final long MIN_TIEMPO_ENTRE_UPDATES = 1000; // 1 sg
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        lblLatitud = (TextView) findViewById(R.id.text1);
+        lblLongitud = (TextView) findViewById(R.id.text2);
+
+        //Permisos para poder localizarte vía GPS
+        mLocMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.e(TAG, "No se tienen permisos necesarios!, se requieren.");
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 225);
+            return;
+        }else{
+            Log.i(TAG, "Permisos necesarios OK!.");
+            mLocMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIEMPO_ENTRE_UPDATES, MIN_CAMBIO_DISTANCIA_PARA_UPDATES, locListener, Looper.getMainLooper());
+        }
+        lblLatitud.setText("Lat ");
+        lblLongitud.setText("Long ");
 
         //musica de fondo para la app
         musicafondo = MediaPlayer.create(this, R.raw.orgricaste);
@@ -77,6 +101,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         miUbicacion();
+        //localizacionPistas();
+        reinosConquistar();
+        posicionAlianza();
 
         // Puntero por defecto con permisos de administrador ORGRICASTELAO
         castelao = new LatLng(42.23661386151706, -8.714480996131897);
@@ -101,11 +128,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         LOCATION_REQUEST_CODE);
             }
         }
-
         mMap.getUiSettings().setZoomControlsEnabled(true);
+
+    }
+
+    private void reinosConquistar(){
 
         // Marcadores 3 pistas
         mMap.addMarker(new MarkerOptions().position(new LatLng(42.23661386151706, -8.714480996131897)));
+//--------------------------------------------------------------------------------------------------------//
 
         //Punto 1 PANDARIA
         latLng = new LatLng(42.237439526686515, -8.714226186275482);//La Fayette
@@ -116,7 +147,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .radius(radius)
                 .strokeColor(Color.parseColor("#0D47A1"))
                 .strokeWidth(4)
-                .fillColor(Color.argb(32, 33, 150, 243));
+                .fillColor(Color.parseColor("#AF4046FF"));
         Circle circle = mMap.addCircle(circleOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
 
@@ -127,6 +158,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.pandariam)));
         mMap.setOnInfoWindowClickListener(this);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//--------------------------------------------------------------------------------------------------------//
 
         //Punto 2 CATACLYSM
         latLng1 = new LatLng(42.237706320945556, -8.715687990188599);//GaliPizza
@@ -137,7 +169,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .radius(radius1)
                 .strokeColor(Color.parseColor("#FF0000"))
                 .strokeWidth(4)
-                .fillColor(Color.argb(32, 33, 150, 243));
+                .fillColor(Color.parseColor("#BBFF404A"));
         Circle circle1 = mMap.addCircle(circleOptions1);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng1, 17));
 
@@ -148,6 +180,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.cataclysm)));
         mMap.setOnInfoWindowClickListener(this);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng1));
+//--------------------------------------------------------------------------------------------------------//
 
         //Punto 3 LEGION
         latLng2 = new LatLng(42.238956026405795, -8.71614396572113);//Parada Bus Arenal
@@ -158,7 +191,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .radius(radius2)
                 .strokeColor(Color.parseColor("#3ADF00"))
                 .strokeWidth(4)
-                .fillColor(Color.argb(32, 33, 150, 243));
+                .fillColor(Color.parseColor("#AF249607"));
         Circle circle2 = mMap.addCircle(circleOptions2);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng2, 17));
 
@@ -168,6 +201,178 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .snippet("Fundador: pargibay 6150")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.legion)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng2));
+        mMap.setOnInfoWindowClickListener(this);
+
+    }
+
+    //Puntos de ataque Alianza
+    private void posicionAlianza() {
+
+        latLngAl = new LatLng(42.236852, -8.714299);//Ataque de la alianza PuertaEdificio
+        int radius = 10;
+
+        CircleOptions circleOptions = new CircleOptions()
+                .center(latLngAl)
+                .radius(radius)
+                .strokeColor(Color.parseColor("#FFEAFF01"))
+                .strokeWidth(4)
+                .fillColor(Color.parseColor("#C80022F9"));
+        Circle circle = mMap.addCircle(circleOptions);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngAl, 17));
+
+        mMap.addMarker(new MarkerOptions()
+                .position(latLngAl)
+                .title("Campamento de la Alianza")
+                .snippet("Enemigo Conserje")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.alianza1)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl));
+        mMap.setOnInfoWindowClickListener(this);
+//--------------------------------------------------------------------------------------------------------//
+
+        latLngAl1 = new LatLng(42.236942, -8.712684);//Ataque de la alianza Telepizza
+        int radius1 = 10;
+
+        CircleOptions circleOptions1 = new CircleOptions()
+                .center(latLngAl1)
+                .radius(radius1)
+                .strokeColor(Color.parseColor("#FFEAFF01"))
+                .strokeWidth(4)
+                .fillColor(Color.parseColor("#C80022F9"));
+        Circle circle1 = mMap.addCircle(circleOptions1);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngAl1, 17));
+
+        mMap.addMarker(new MarkerOptions()
+                .position(latLngAl1)
+                .title("Campamento de la Alianza")
+                .snippet("Enemigo Telepizza")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.alianza1)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl1));
+        mMap.setOnInfoWindowClickListener(this);
+//--------------------------------------------------------------------------------------------------------//
+
+        latLngAl2 = new LatLng(42.23772, -8.712716);//Ataque de la alianza RotondaTV
+        int radius2 = 10;
+
+        CircleOptions circleOptions2 = new CircleOptions()
+                .center(latLngAl2)
+                .radius(radius2)
+                .strokeColor(Color.parseColor("#FFEAFF01"))
+                .strokeWidth(4)
+                .fillColor(Color.parseColor("#C80022F9"));
+        Circle circle2 = mMap.addCircle(circleOptions2);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngAl2, 17));
+
+        mMap.addMarker(new MarkerOptions()
+                .position(latLngAl2)
+                .title("Campamento de la Alianza")
+                .snippet("Enemigo RotonTV")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.alianza1)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl2));
+        mMap.setOnInfoWindowClickListener(this);
+//--------------------------------------------------------------------------------------------------------//
+
+        latLngAl3 = new LatLng(42.237748, -8.714929);//Ataque de la alianza CaféSambor´s
+        int radius3 = 10;
+
+        CircleOptions circleOptions3 = new CircleOptions()
+                .center(latLngAl3)
+                .radius(radius3)
+                .strokeColor(Color.parseColor("#FFEAFF01"))
+                .strokeWidth(4)
+                .fillColor(Color.parseColor("#C80022F9"));
+        Circle circle3 = mMap.addCircle(circleOptions3);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngAl3, 17));
+
+        mMap.addMarker(new MarkerOptions()
+                .position(latLngAl3)
+                .title("Campamento de la Alianza")
+                .snippet("Enemigo Sambors")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.alianza1)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl3));
+        mMap.setOnInfoWindowClickListener(this);
+//--------------------------------------------------------------------------------------------------------//
+
+        latLngAl4 = new LatLng(42.237945, -8.716356);//Ataque de la alianza CerveceríaLatería
+        int radius4 = 10;
+
+        CircleOptions circleOptions4 = new CircleOptions()
+                .center(latLngAl4)
+                .radius(radius4)
+                .strokeColor(Color.parseColor("#FFEAFF01"))
+                .strokeWidth(4)
+                .fillColor(Color.parseColor("#C80022F9"));
+        Circle circle4 = mMap.addCircle(circleOptions4);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngAl, 17));
+
+        mMap.addMarker(new MarkerOptions()
+                .position(latLngAl4)
+                .title("Campamento de la Alianza")
+                .snippet("Enemigo Latería")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.alianza1)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl4));
+        mMap.setOnInfoWindowClickListener(this);
+//--------------------------------------------------------------------------------------------------------//
+
+        latLngAl5 = new LatLng(42.238749, -8.714991);//Ataque de la alianza RealeSeguros
+        int radius5 = 10;
+
+        CircleOptions circleOptions5 = new CircleOptions()
+                .center(latLngAl5)
+                .radius(radius5)
+                .strokeColor(Color.parseColor("#FFEAFF01"))
+                .strokeWidth(4)
+                .fillColor(Color.parseColor("#C80022F9"));
+        Circle circle5 = mMap.addCircle(circleOptions5);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngAl5, 17));
+
+        mMap.addMarker(new MarkerOptions()
+                .position(latLngAl5)
+                .title("Campamento de la Alianza")
+                .snippet("Enemigo Reale")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.alianza1)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl5));
+        mMap.setOnInfoWindowClickListener(this);
+//--------------------------------------------------------------------------------------------------------//
+
+        latLngAl6 = new LatLng(42.237968, -8.714398);//Ataque de la alianza Misterphone
+        int radius6 = 10;
+
+        CircleOptions circleOptions6 = new CircleOptions()
+                .center(latLngAl6)
+                .radius(radius6)
+                .strokeColor(Color.parseColor("#FFEAFF01"))
+                .strokeWidth(4)
+                .fillColor(Color.parseColor("#C80022F9"));
+        Circle circle6 = mMap.addCircle(circleOptions6);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngAl6, 17));
+
+        mMap.addMarker(new MarkerOptions()
+                .position(latLngAl6)
+                .title("Campamento de la Alianza")
+                .snippet("Enemigo MrPhone")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.alianza1)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl6));
+        mMap.setOnInfoWindowClickListener(this);
+//--------------------------------------------------------------------------------------------------------//
+
+        latLngAl7 = new LatLng(42.239073, -8.717032);//Ataque de la alianza MetropolGalicia
+        int radius7 = 10;
+
+        CircleOptions circleOptions7 = new CircleOptions()
+                .center(latLngAl7)
+                .radius(radius7)
+                .strokeColor(Color.parseColor("#FFEAFF01"))
+                .strokeWidth(4)
+                .fillColor(Color.parseColor("#C80022F9"));
+        Circle circle7 = mMap.addCircle(circleOptions7);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngAl7, 17));
+
+        mMap.addMarker(new MarkerOptions()
+                .position(latLngAl7)
+                .title("Campamento de la Alianza")
+                .snippet("Enemigo MetroGaliza")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.alianza1)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl7));
         mMap.setOnInfoWindowClickListener(this);
 
     }
@@ -219,28 +424,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             lon=localitation.getLongitude();
             localizacionActual(lat,lon);
         }
+
     }
 
     LocationListener locListener = new LocationListener(){
-
-
         @Override
         public void onLocationChanged(Location location) {
             actualizarUbicacion(location);
+            Log.i(TAG, "Lat " + location.getLatitude() + " Long " + location.getLongitude());
+            lblLatitud.setText("Lat: " +   location.getLatitude());
+            lblLongitud.setText(("Long: " + location.getLongitude()));
         }
 
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
+            Log.i(TAG, "onProviderDisabled()");
 
         }
 
         @Override
         public void onProviderEnabled(String provider) {
+            Log.i(TAG, "onProviderDisabled()");
 
         }
 
         @Override
         public void onProviderDisabled(String provider) {
+            Log.i(TAG, "onProviderDisabled()");
 
         }
     };
