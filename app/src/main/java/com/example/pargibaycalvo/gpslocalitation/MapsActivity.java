@@ -276,7 +276,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    //confirmacion al salir de la app con sonido
+    //confirmacion al salir de la app
     @Override
     public void onBackPressed(){
 
