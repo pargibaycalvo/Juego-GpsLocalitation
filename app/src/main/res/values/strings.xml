@@ -5,4 +5,7 @@
     <string name="cataclysm_full_snippet">La historia de cataclysm en Orgricastelao</string>
     <string name="legion_full_snippet">La historia de legion en Orgricastelao</string>
     <string name="orgricastelao_full_snippet">La historia de Orgricastelao</string>
+
+    <string name="txtButton">Escanea el QR</string>
+
 </resources>

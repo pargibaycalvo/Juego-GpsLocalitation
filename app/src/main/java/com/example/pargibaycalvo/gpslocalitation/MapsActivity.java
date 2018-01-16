@@ -1,7 +1,6 @@
 package com.example.pargibaycalvo.gpslocalitation;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -33,7 +32,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener{
 
     //Declaraciones, musica de fondo y tiempo de respuesta en salir de la app
     int MAX_VOLUME = 100;
@@ -43,14 +42,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public long tiempoPrimerClick;
 
     //Declaraciones varias del programa
-    private MediaPlayer musicafondo;
+    private MediaPlayer musicafondo, guerra, panda, cata, legion;
     private GoogleMap mMap;
     private Marker marcador;
     private LatLng latLng, latLng1, latLng2, castelao, coordenadas;
     private LatLng latLngAl, latLngAl1, latLngAl2, latLngAl3, latLngAl4, latLngAl5, latLngAl6, latLngAl7;
-    private TextView lblLatitud, lblLongitud;
-    double lat = 0.0;
-    double lon = 0.0;
+    private TextView lblLatitud, lblLongitud, lblPanda, lblCata, lblLegion;
+    double lat = 42.015147;
+    double lon = -8.666044;
     private static final int LOCATION_REQUEST_CODE = 1;
 
     //Declaraciones varias para la detección de coordenadas GPS
@@ -58,6 +57,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationManager mLocMgr;
     private static final long MIN_CAMBIO_DISTANCIA_PARA_UPDATES = (long) 1; // 1 metro
     private static final long MIN_TIEMPO_ENTRE_UPDATES = 1000; // 1 sg
+
+    //Declaraciones de distancias entre puntos tanto lideres como puntos de asalto
+    private Location locationGPS;
+    private Location location1panda, location2cata, location3legion;
+    private Location location1ali, location2ali, location3ali, location4ali, location5ali, location6ali, location7ali, location8ali;
+    float distancia1ali, distancia2ali, distancia3ali, distancia4ali, distancia5ali, distancia6ali, distancia7ali, distancia8ali;
+    float distancia1 = 0, distancia2 = 0, distancia3 = 0;
+    float distanciaC = 0;
 
 
     @Override
@@ -71,6 +78,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         lblLatitud = (TextView) findViewById(R.id.text1);
         lblLongitud = (TextView) findViewById(R.id.text2);
+        lblPanda = (TextView) findViewById(R.id.text3);
+        lblCata = (TextView) findViewById(R.id.text4);
+        lblLegion = (TextView) findViewById(R.id.text5);
+
 
         //Permisos para poder localizarte vía GPS
         mLocMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -95,18 +106,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 musicafondo.start();
             }
         }, 1000);
+
+        //localizacion del punto origen GPS para calcular los metros que quedan en cada marker 42.015147, -8.666044
+        locationGPS = new Location("Actual posicion GPS");
+        locationGPS.setLatitude(lat);
+        locationGPS.setLongitude(lon);
+
+        //musica para las distancias
+        guerra = MediaPlayer.create(this, R.raw.guerraal);
+        panda = MediaPlayer.create(this, R.raw.panda);
+        cata = MediaPlayer.create(this, R.raw.cata);
+        legion = MediaPlayer.create(this, R.raw.leg);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         miUbicacion();
-        //localizacionPistas();
         reinosConquistar();
         posicionAlianza();
+        localizacionPanda();
 
         // Puntero por defecto con permisos de administrador ORGRICASTELAO
-        castelao = new LatLng(42.23661386151706, -8.714480996131897);
+        castelao = new LatLng(42.236572, -8.714315);
         mMap.addMarker(new MarkerOptions()
                 .position(castelao)
                 .title("Orgricastelao (DanielCastelao)")
@@ -129,17 +151,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
         mMap.getUiSettings().setZoomControlsEnabled(true);
-
     }
 
+    //--------------------------------------------------------------------------------------------------------//
+    //Marcadores principales
     private void reinosConquistar(){
 
-        // Marcadores 3 pistas
-        mMap.addMarker(new MarkerOptions().position(new LatLng(42.23661386151706, -8.714480996131897)));
-//--------------------------------------------------------------------------------------------------------//
-
         //Punto 1 PANDARIA
-        latLng = new LatLng(42.237439526686515, -8.714226186275482);//La Fayette
+        latLng = new LatLng(42.237439, -8.714226);//La Fayette
         int radius = 10;
 
         CircleOptions circleOptions = new CircleOptions()
@@ -158,10 +177,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.pandariam)));
         mMap.setOnInfoWindowClickListener(this);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+        location1panda = new Location("pandaria");
+        location1panda.setLatitude(42.237439526686515);
+        location1panda.setLongitude(-8.714226186275482);
+        distancia1 = locationGPS.distanceTo(location1panda)/1000;
+        lblPanda.setText("Mts a Pandaria: "+distancia1);
 //--------------------------------------------------------------------------------------------------------//
 
         //Punto 2 CATACLYSM
-        latLng1 = new LatLng(42.237706320945556, -8.715687990188599);//GaliPizza
+        latLng1 = new LatLng(42.237706, -8.715687);//GaliPizza
         int radius1 = 10;
 
         CircleOptions circleOptions1 = new CircleOptions()
@@ -180,10 +205,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.cataclysm)));
         mMap.setOnInfoWindowClickListener(this);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng1));
+
+        location2cata = new Location("cataclysm");
+        location2cata.setLatitude(42.237706320945556);
+        location2cata.setLongitude(-8.715687990188599);
+        distancia2 = locationGPS.distanceTo(location2cata)/1000;
+        lblCata.setText("Mts a Cataclysm: "+distancia2);
 //--------------------------------------------------------------------------------------------------------//
 
         //Punto 3 LEGION
-        latLng2 = new LatLng(42.238956026405795, -8.71614396572113);//Parada Bus Arenal
+        latLng2 = new LatLng(42.238956, -8.716143);//Parada Bus Arenal
         int radius2 = 10;
 
         CircleOptions circleOptions2 = new CircleOptions()
@@ -203,8 +234,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng2));
         mMap.setOnInfoWindowClickListener(this);
 
+        location3legion = new Location("legion");
+        location3legion.setLatitude(42.238956026405795);
+        location3legion.setLongitude(-8.71614396572113);
+        distancia3 = locationGPS.distanceTo(location3legion)/1000;
+        lblLegion.setText("Mts a Legion: "+distancia3);
     }
 
+    //--------------------------------------------------------------------------------------------------------//
     //Puntos de ataque Alianza
     private void posicionAlianza() {
 
@@ -227,6 +264,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.alianza1)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl));
         mMap.setOnInfoWindowClickListener(this);
+
+        location1ali = new Location("puertaedificio");
+        location1ali.setLatitude(42.236852);
+        location1ali.setLongitude(-8.714299);
+        distancia1ali = locationGPS.distanceTo(location1ali);
 //--------------------------------------------------------------------------------------------------------//
 
         latLngAl1 = new LatLng(42.236942, -8.712684);//Ataque de la alianza Telepizza
@@ -248,6 +290,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.alianza1)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl1));
         mMap.setOnInfoWindowClickListener(this);
+
+        location2ali = new Location("telepizza");
+        location2ali.setLatitude(42.236942);
+        location2ali.setLongitude(-8.712684);
+        distancia2ali = locationGPS.distanceTo(location2ali);
 //--------------------------------------------------------------------------------------------------------//
 
         latLngAl2 = new LatLng(42.23772, -8.712716);//Ataque de la alianza RotondaTV
@@ -269,6 +316,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.alianza1)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl2));
         mMap.setOnInfoWindowClickListener(this);
+
+        location3ali = new Location("rotondatv");
+        location3ali.setLatitude(42.23772);
+        location3ali.setLongitude(-8.712716);
+        distancia3ali = locationGPS.distanceTo(location3ali);
 //--------------------------------------------------------------------------------------------------------//
 
         latLngAl3 = new LatLng(42.237748, -8.714929);//Ataque de la alianza CaféSambor´s
@@ -290,6 +342,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.alianza1)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl3));
         mMap.setOnInfoWindowClickListener(this);
+
+        location4ali = new Location("sambors");
+        location4ali.setLatitude(42.237748);
+        location4ali.setLongitude(-8.714929);
+        distancia4ali = locationGPS.distanceTo(location4ali);
 //--------------------------------------------------------------------------------------------------------//
 
         latLngAl4 = new LatLng(42.237945, -8.716356);//Ataque de la alianza CerveceríaLatería
@@ -311,6 +368,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.alianza1)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl4));
         mMap.setOnInfoWindowClickListener(this);
+
+        location5ali = new Location("lateria");
+        location5ali.setLatitude(42.237945);
+        location5ali.setLongitude(-8.716356);
+        distancia5ali = locationGPS.distanceTo(location5ali);
 //--------------------------------------------------------------------------------------------------------//
 
         latLngAl5 = new LatLng(42.238749, -8.714991);//Ataque de la alianza RealeSeguros
@@ -332,6 +394,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.alianza1)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl5));
         mMap.setOnInfoWindowClickListener(this);
+
+        location6ali = new Location("reale");
+        location6ali.setLatitude(42.238749);
+        location6ali.setLongitude(-8.714991);
+        distancia6ali = locationGPS.distanceTo(location6ali);
 //--------------------------------------------------------------------------------------------------------//
 
         latLngAl6 = new LatLng(42.237968, -8.714398);//Ataque de la alianza Misterphone
@@ -353,6 +420,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.alianza1)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl6));
         mMap.setOnInfoWindowClickListener(this);
+
+        location7ali = new Location("misterphone");
+        location7ali.setLatitude(42.237968);
+        location7ali.setLongitude(-8.714398);
+        distancia7ali = locationGPS.distanceTo(location7ali);
 //--------------------------------------------------------------------------------------------------------//
 
         latLngAl7 = new LatLng(42.239073, -8.717032);//Ataque de la alianza MetropolGalicia
@@ -375,15 +447,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl7));
         mMap.setOnInfoWindowClickListener(this);
 
+        location8ali = new Location("metropol");
+        location8ali.setLatitude(42.239073);
+        location8ali.setLongitude(-8.717032);
+        distancia8ali = locationGPS.distanceTo(location8ali);
     }
 
+    //--------------------------------------------------------------------------------------------------------//
     //Ventana de información
     @Override
     public void onInfoWindowClick(Marker marker) {
+
         if (marker.equals(latLng)) {
             WowDialogFragment.newInstance(marker.getTitle(),
                     getString(R.string.pandaria_full_snippet))
                     .show(getSupportFragmentManager(), null);
+
         }
         else if (marker.equals(latLng1)){
             WowDialogFragment.newInstance(marker.getTitle(),
@@ -403,6 +482,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         else{
             System.out.println("Error");
         }
+
     }
 
 
@@ -413,15 +493,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(marcador!=null)marcador.remove();
         marcador=mMap.addMarker(new MarkerOptions()
                 .position(coordenadas)
-                .title("Tu posicion actual")
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher_round)));
+                .title("Tú")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pj)));
         mMap.animateCamera(miUbi);
     }
 
     private void actualizarUbicacion(Location localitation){
         if(localitation!=null){
-            lat=localitation.getLatitude();
-            lon=localitation.getLongitude();
+            lat= (float) localitation.getLatitude();
+            lon=(float)localitation.getLongitude();
             localizacionActual(lat,lon);
         }
 
@@ -469,23 +549,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    private void localizacionPistas() {
-        final MediaPlayer pandaria = MediaPlayer.create(this, R.raw.panda);
-        final MediaPlayer cataclysm = MediaPlayer.create(this, R.raw.cata);
-        final MediaPlayer legion = MediaPlayer.create(this, R.raw.leg);
+    private void localizacionPanda() {
 
-        if (coordenadas == latLng) {
-            musicafondo.stop();
-            pandaria.start();
-        } else if (coordenadas == latLng1) {
-            musicafondo.stop();
-            cataclysm.start();
-        } else if (coordenadas == latLng2) {
-            musicafondo.stop();
-            legion.start();
+        if(distanciaC < ){
+            guerra.start();
         }
-    }
 
+    }
+    
     //confirmacion al salir de la app
     @Override
     public void onBackPressed(){
