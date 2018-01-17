@@ -43,14 +43,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public long tiempoPrimerClick;
 
     //Declaraciones varias del programa
-    private MediaPlayer musicafondo, guerra, panda, cata, legion;
+    private MediaPlayer musicafondo, guerra1, guerra2, panda, cata, legion;
     private GoogleMap mMap;
     private Marker marcador;
     private LatLng latLng, latLng1, latLng2, castelao, coordenadas;
     private LatLng latLngAl, latLngAl1, latLngAl2, latLngAl3, latLngAl4, latLngAl5, latLngAl6, latLngAl7;
     private TextView lblLatitud, lblLongitud, lblPanda, lblCata, lblLegion;
-    double lat;
-    double lon;
+    double lat, lon;
     private static final int LOCATION_REQUEST_CODE = 1;
 
     //Declaraciones varias para la detección de coordenadas GPS
@@ -65,6 +64,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Location location1ali, location2ali, location3ali, location4ali, location5ali, location6ali, location7ali, location8ali;
     double distancia1ali, distancia2ali, distancia3ali, distancia4ali, distancia5ali, distancia6ali, distancia7ali, distancia8ali;
     double distancia1, distancia2, distancia3;
+    double metroscerca = 20;
+    double metroslejos = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +81,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         lblPanda = (TextView) findViewById(R.id.text3);
         lblCata = (TextView) findViewById(R.id.text4);
         lblLegion = (TextView) findViewById(R.id.text5);
-
 
         //Permisos para poder localizarte vía GPS
         mLocMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -112,10 +112,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationGPS.setLongitude(locationGPS.getLongitude());
 
         //musica para las distancias
-        //guerra = MediaPlayer.create(this, R.raw.guerral);
-        //panda = MediaPlayer.create(this, R.raw.panda);
-        //cata = MediaPlayer.create(this, R.raw.cata);
-        //legion = MediaPlayer.create(this, R.raw.leg);
+        guerra1 = MediaPlayer.create(this, R.raw.guerra1);
+        guerra2 = MediaPlayer.create(this, R.raw.guerra2);
+        panda = MediaPlayer.create(this, R.raw.panda);
+        cata = MediaPlayer.create(this, R.raw.cata);
+        legion = MediaPlayer.create(this, R.raw.legion);
     }
 
     @Override
@@ -247,7 +248,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //Puntos de ataque Alianza
     private void posicionAlianza() {
 
-        latLngAl = new LatLng(42.236902, -8.714456);//Ataque de la alianza PuertaEdificio
+        latLngAl = new LatLng(42.239201, -8.718139);//Ataque de la alianza PuertaEdificio 42.23920164714094 -8.71813952922821
         int radius = 10;
 
         CircleOptions circleOptions = new CircleOptions()
@@ -267,8 +268,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl));
         mMap.setOnInfoWindowClickListener(this);
 
-        double lati1 = 42.236902;
-        double longi1 = -8.714456;
+        double lati1 = 42.239201;
+        double longi1 = -8.718139;
 
         location1ali = new Location("puertaedificio");
         location1ali.setLatitude(lati1);
@@ -459,7 +460,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     //--------------------------------------------------------------------------------------------------------//
-    //Ventana de información
+    //Ventana de información (NO ACTIVA)
     @Override
     public void onInfoWindowClick(Marker marker) {
 
@@ -556,11 +557,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void localizacionPanda() {
 
-        if(locationGPS.distanceTo(location1ali) <= 20){
-            musicafondo.stop();
+        if(locationGPS.distanceTo(location1ali) <= metroscerca){
+            guerra1.start();
         }
-        else if(locationGPS.distanceTo(location1ali) >10){
-            musicafondo.start();
+        else if(locationGPS.distanceTo(location1ali) >metroslejos){
+            guerra1.stop();
         }
 
     }
