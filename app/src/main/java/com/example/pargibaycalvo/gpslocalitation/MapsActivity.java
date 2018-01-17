@@ -1,6 +1,7 @@
 package com.example.pargibaycalvo.gpslocalitation;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -48,8 +49,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng latLng, latLng1, latLng2, castelao, coordenadas;
     private LatLng latLngAl, latLngAl1, latLngAl2, latLngAl3, latLngAl4, latLngAl5, latLngAl6, latLngAl7;
     private TextView lblLatitud, lblLongitud, lblPanda, lblCata, lblLegion;
-    double lat = 42.015147;
-    double lon = -8.666044;
+    double lat;
+    double lon;
     private static final int LOCATION_REQUEST_CODE = 1;
 
     //Declaraciones varias para la detección de coordenadas GPS
@@ -62,10 +63,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Location locationGPS;
     private Location location1panda, location2cata, location3legion;
     private Location location1ali, location2ali, location3ali, location4ali, location5ali, location6ali, location7ali, location8ali;
-    float distancia1ali, distancia2ali, distancia3ali, distancia4ali, distancia5ali, distancia6ali, distancia7ali, distancia8ali;
-    float distancia1 = 0, distancia2 = 0, distancia3 = 0;
-    float distanciaC = 0;
-
+    double distancia1ali, distancia2ali, distancia3ali, distancia4ali, distancia5ali, distancia6ali, distancia7ali, distancia8ali;
+    double distancia1, distancia2, distancia3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,14 +108,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //localizacion del punto origen GPS para calcular los metros que quedan en cada marker 42.015147, -8.666044
         locationGPS = new Location("Actual posicion GPS");
-        locationGPS.setLatitude(lat);
-        locationGPS.setLongitude(lon);
+        locationGPS.setLatitude(locationGPS.getLatitude());
+        locationGPS.setLongitude(locationGPS.getLongitude());
 
         //musica para las distancias
-        guerra = MediaPlayer.create(this, R.raw.guerraal);
-        panda = MediaPlayer.create(this, R.raw.panda);
-        cata = MediaPlayer.create(this, R.raw.cata);
-        legion = MediaPlayer.create(this, R.raw.leg);
+        //guerra = MediaPlayer.create(this, R.raw.guerral);
+        //panda = MediaPlayer.create(this, R.raw.panda);
+        //cata = MediaPlayer.create(this, R.raw.cata);
+        //legion = MediaPlayer.create(this, R.raw.leg);
     }
 
     @Override
@@ -178,11 +177,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnInfoWindowClickListener(this);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
+        double lati = 42.237439;
+        double longi = -8.714226;
+
         location1panda = new Location("pandaria");
-        location1panda.setLatitude(42.237439526686515);
-        location1panda.setLongitude(-8.714226186275482);
-        distancia1 = locationGPS.distanceTo(location1panda)/1000;
-        lblPanda.setText("Mts a Pandaria: "+distancia1);
+        location1panda.setLatitude(lati);
+        location1panda.setLongitude(longi);
+        distancia1 = locationGPS.distanceTo(location1panda);
+        lblPanda.setText(("Mts a Pandaria: "+distancia1));
 //--------------------------------------------------------------------------------------------------------//
 
         //Punto 2 CATACLYSM
@@ -207,10 +209,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng1));
 
         location2cata = new Location("cataclysm");
-        location2cata.setLatitude(42.237706320945556);
-        location2cata.setLongitude(-8.715687990188599);
-        distancia2 = locationGPS.distanceTo(location2cata)/1000;
-        lblCata.setText("Mts a Cataclysm: "+distancia2);
+        location2cata.setLatitude(42.237706);
+        location2cata.setLongitude(-8.715687);
+        distancia2 = locationGPS.distanceTo(location2cata);
+        lblCata.setText(("Mts a Cataclysm: "+distancia2));
 //--------------------------------------------------------------------------------------------------------//
 
         //Punto 3 LEGION
@@ -235,17 +237,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnInfoWindowClickListener(this);
 
         location3legion = new Location("legion");
-        location3legion.setLatitude(42.238956026405795);
-        location3legion.setLongitude(-8.71614396572113);
-        distancia3 = locationGPS.distanceTo(location3legion)/1000;
-        lblLegion.setText("Mts a Legion: "+distancia3);
+        location3legion.setLatitude(42.238956);
+        location3legion.setLongitude(-8.716143);
+        distancia3 = locationGPS.distanceTo(location3legion);
+        lblLegion.setText(("Mts a Legion: "+distancia3));
     }
 
     //--------------------------------------------------------------------------------------------------------//
     //Puntos de ataque Alianza
     private void posicionAlianza() {
 
-        latLngAl = new LatLng(42.236852, -8.714299);//Ataque de la alianza PuertaEdificio
+        latLngAl = new LatLng(42.236902, -8.714456);//Ataque de la alianza PuertaEdificio
         int radius = 10;
 
         CircleOptions circleOptions = new CircleOptions()
@@ -265,10 +267,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl));
         mMap.setOnInfoWindowClickListener(this);
 
+        double lati1 = 42.236902;
+        double longi1 = -8.714456;
+
         location1ali = new Location("puertaedificio");
-        location1ali.setLatitude(42.236852);
-        location1ali.setLongitude(-8.714299);
-        distancia1ali = locationGPS.distanceTo(location1ali);
+        location1ali.setLatitude(lati1);
+        location1ali.setLongitude(longi1);
+        //distancia1ali = locationGPS.distanceTo(location1ali);
 //--------------------------------------------------------------------------------------------------------//
 
         latLngAl1 = new LatLng(42.236942, -8.712684);//Ataque de la alianza Telepizza
@@ -489,19 +494,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //Posicion Actual del Usuario (conectarse vía GPS)
     private void localizacionActual(double lat, double lon){
         coordenadas= new LatLng(lat,lon);
-        CameraUpdate miUbi= CameraUpdateFactory.newLatLngZoom(coordenadas, 16);
+        //CameraUpdate miUbi= CameraUpdateFactory.newLatLngZoom(coordenadas, 16);
         if(marcador!=null)marcador.remove();
         marcador=mMap.addMarker(new MarkerOptions()
                 .position(coordenadas)
                 .title("Tú")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.pj)));
-        mMap.animateCamera(miUbi);
+        //mMap.animateCamera(miUbi);
     }
 
     private void actualizarUbicacion(Location localitation){
         if(localitation!=null){
-            lat= (float) localitation.getLatitude();
-            lon=(float)localitation.getLongitude();
+            lat= localitation.getLatitude();
+            lon=localitation.getLongitude();
             localizacionActual(lat,lon);
         }
 
@@ -512,7 +517,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public void onLocationChanged(Location location) {
             actualizarUbicacion(location);
             Log.i(TAG, "Lat " + location.getLatitude() + " Long " + location.getLongitude());
-            lblLatitud.setText("Lat: " +   location.getLatitude());
+            lblLatitud.setText(("Lat: " +   location.getLatitude()));
             lblLongitud.setText(("Long: " + location.getLongitude()));
         }
 
@@ -543,20 +548,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         actualizarUbicacion(location);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 15000, 0, locListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 15000, 0, locListener);
 
     }
 
     private void localizacionPanda() {
 
-        if(distanciaC < ){
-            guerra.start();
+        if(locationGPS.distanceTo(location1ali) <= 20){
+            musicafondo.stop();
+        }
+        else if(locationGPS.distanceTo(location1ali) >10){
+            musicafondo.start();
         }
 
     }
-    
+
     //confirmacion al salir de la app
     @Override
     public void onBackPressed(){
