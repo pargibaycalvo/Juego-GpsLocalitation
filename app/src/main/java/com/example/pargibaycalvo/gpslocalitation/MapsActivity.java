@@ -55,13 +55,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //Declaraciones varias para la detección de coordenadas GPS
     private static final String TAG = "gpslog";
     private LocationManager mLocMgr;
-    private static final long MIN_CAMBIO_DISTANCIA_PARA_UPDATES = (long) 1; // 1 metro
-    private static final long MIN_TIEMPO_ENTRE_UPDATES = 1000; // 1 sg
+    private static final long MIN_CAMBIO_DISTANCIA_PARA_UPDATES = (long) 1;
+    private static final long MIN_TIEMPO_ENTRE_UPDATES = 1000;
 
     //Declaraciones de distancias entre puntos tanto lideres como puntos de asalto
     private Location location1panda, location2cata, location3leg;
     private Location location1ali, location2ali, location3ali, location4ali, location5ali, location6ali, location7ali, location8ali;
-    double distancia1ali, distancia2ali, distancia3ali, distancia4ali, distancia5ali, distancia6ali, distancia7ali, distancia8ali;
     float distancia1, distancia2, distancia3;
     float metroscerca = 20;
     float metroslejos = 10;
@@ -500,89 +499,48 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(localitation.distanceTo(location1panda)<= metroscerca){
             musicafondo.stop();
             panda.start();
-        }
-        else if(localitation.distanceTo(location1panda)>metroslejos){
+        }else if(localitation.distanceTo(location1panda)>metroslejos){
             panda.stop();
             musicafondo.start();
-        }
-        if(localitation.distanceTo(location2cata)<= metroscerca){
-            musicafondo.stop();
-            cata.start();
-        }
-        else if(localitation.distanceTo(location2cata)>metroslejos){
-            cata.stop();
-            musicafondo.start();
-        }
-        if(localitation.distanceTo(location3leg)<= metroscerca){
-            musicafondo.stop();
-            legion.start();
-        }
-        else if(localitation.distanceTo(location3leg)>metroslejos){
-            legion.stop();
-            musicafondo.start();
+        }else{
+            if(localitation.distanceTo(location2cata)<= metroscerca){
+                musicafondo.stop();
+                cata.start();
+            }else if(localitation.distanceTo(location2cata)>metroslejos){
+                cata.stop();
+                musicafondo.start();
+            }else{
+                if(localitation.distanceTo(location3leg)<= metroscerca){
+                    musicafondo.stop();
+                    legion.start();
+                }else if(localitation.distanceTo(location3leg)>metroslejos){
+                    legion.stop();
+                    musicafondo.start();
+                }
+            }
         }
     }
 
     private void distanciaAlianza(Location localitation){
-        distancia1ali = localitation.distanceTo(location1ali);
-        distancia2ali = localitation.distanceTo(location2ali);
-        distancia3ali = localitation.distanceTo(location3ali);
-        distancia4ali = localitation.distanceTo(location4ali);
-        distancia5ali = localitation.distanceTo(location5ali);
-        distancia6ali = localitation.distanceTo(location6ali);
-        distancia7ali = localitation.distanceTo(location7ali);
-        distancia8ali = localitation.distanceTo(location8ali);
-
-        if(localitation.distanceTo(location1ali) <= metroscerca){
+        if(localitation.distanceTo(location1ali) <= metroscerca || localitation.distanceTo(location2ali) <= metroscerca ||
+                localitation.distanceTo(location3ali) <= metroscerca || localitation.distanceTo(location4ali) <= metroscerca){
             musicafondo.stop();
             guerra1.start();
-        }else if(localitation.distanceTo(location1ali) > metroslejos){
-            musicafondo.start();
-        }
-        if(localitation.distanceTo(location2ali) <= metroscerca){
-            musicafondo.stop();
-            guerra2.start();
-        }else if(localitation.distanceTo(location2ali) > metroslejos){
-            musicafondo.start();
-        }
-        if(localitation.distanceTo(location3ali) <= metroscerca){
-            musicafondo.stop();
-            guerra1.start();
-        }else if(localitation.distanceTo(location3ali) > metroslejos){
-            musicafondo.start();
-        }
-        if(localitation.distanceTo(location4ali) <= metroscerca){
-            musicafondo.stop();
-            guerra2.start();
-        }else if(localitation.distanceTo(location4ali) > metroslejos){
-            musicafondo.start();
-        }
-        if(localitation.distanceTo(location5ali) <= metroscerca){
-            musicafondo.stop();
-            guerra1.start();
-        }else if(localitation.distanceTo(location5ali) > metroslejos){
-            musicafondo.start();
-        }
-        if(localitation.distanceTo(location6ali) <= metroscerca){
-            musicafondo.stop();
-            guerra2.start();
-        }else if(localitation.distanceTo(location6ali) > metroslejos){
-            musicafondo.start();
-        }
-        if(localitation.distanceTo(location7ali) <= metroscerca){
-            musicafondo.stop();
-            guerra1.start();
-        }else if(localitation.distanceTo(location7ali) > metroslejos){
-            musicafondo.start();
-        }
-        if(localitation.distanceTo(location8ali) <= metroscerca){
-            musicafondo.stop();
-            guerra2.start();
-        }else if(localitation.distanceTo(location8ali) > metroslejos){
+        }else if(localitation.distanceTo(location1ali) > metroslejos || localitation.distanceTo(location2ali) > metroslejos ||
+                localitation.distanceTo(location3ali) > metroslejos || localitation.distanceTo(location4ali) > metroslejos){
+            guerra1.stop();
             musicafondo.start();
         }
 
-
+        if(localitation.distanceTo(location5ali) <= metroscerca || localitation.distanceTo(location6ali) <= metroscerca ||
+                localitation.distanceTo(location7ali) <= metroscerca || localitation.distanceTo(location8ali) <= metroscerca){
+            musicafondo.stop();
+            guerra2.start();
+        }else if(localitation.distanceTo(location5ali) > metroslejos || localitation.distanceTo(location6ali) > metroslejos ||
+                localitation.distanceTo(location7ali) > metroslejos || localitation.distanceTo(location8ali) > metroslejos){
+            guerra2.stop();
+            musicafondo.start();
+        }
     }
 
     LocationListener locListener = new LocationListener(){
