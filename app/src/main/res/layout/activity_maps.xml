@@ -13,8 +13,8 @@
         android:layout_above="@+id/text1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:onClick="readQr"
-        android:text="QR" />
+        android:background="@drawable/arthas"
+        />
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -41,9 +41,9 @@
         android:id="@+id/text3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/text4"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:text="Pandaria: 0" />
 
     <TextView
@@ -51,20 +51,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
+        android:layout_above="@+id/button2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/text3"
-        android:layout_marginTop="12dp"
+        android:layout_marginBottom="18dp"
         android:text="Cataclysm: 0" />
 
     <TextView
         android:id="@+id/text5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/button2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/text4"
-        android:layout_marginTop="13dp"
         android:text="Legion: 0" />
 
 
