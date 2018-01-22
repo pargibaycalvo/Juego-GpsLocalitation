@@ -59,7 +59,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final long MIN_TIEMPO_ENTRE_UPDATES = 1000; // 1 sg
 
     //Declaraciones de distancias entre puntos tanto lideres como puntos de asalto
-    private Location locationGPS;
+    private Location location1panda, location2cata, location3leg;
     private Location location1ali, location2ali, location3ali, location4ali, location5ali, location6ali, location7ali, location8ali;
     double distancia1ali, distancia2ali, distancia3ali, distancia4ali, distancia5ali, distancia6ali, distancia7ali, distancia8ali;
     float distancia1, distancia2, distancia3;
@@ -104,11 +104,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 musicafondo.start();
             }
         }, 1000);
-
-        //localizacion del punto origen GPS para calcular los metros que quedan en cada marker 42.015147, -8.666044
-        locationGPS = new Location(LocationManager.NETWORK_PROVIDER);
-        locationGPS.setLatitude(locationGPS.getLatitude());
-        locationGPS.setLongitude(locationGPS.getLongitude());
 
         //musica para las distancias
         guerra1 = MediaPlayer.create(this, R.raw.guerra1);
@@ -175,6 +170,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.pandariam)));
         mMap.setOnInfoWindowClickListener(this);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+        location1panda = new Location("panda");
+        location1panda.setLatitude(42.237439);
+        location1panda.setLongitude(-8.714226);
 //--------------------------------------------------------------------------------------------------------//
 
         //Punto 2 CATACLYSM
@@ -197,6 +196,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.cataclysm)));
         mMap.setOnInfoWindowClickListener(this);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng1));
+
+        location2cata = new Location("cataclysm");
+        location2cata.setLatitude(42.237706);
+        location2cata.setLongitude(-8.715687);
 //--------------------------------------------------------------------------------------------------------//
 
         //Punto 3 LEGION
@@ -219,13 +222,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.legion)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng2));
         mMap.setOnInfoWindowClickListener(this);
+
+        location3leg = new Location("legion");
+        location3leg.setLatitude(42.238956);
+        location3leg.setLongitude(-8.716143);
     }
 
     //--------------------------------------------------------------------------------------------------------//
     //Puntos de ataque Alianza
     private void posicionAlianza() {
 
-        latLngAl = new LatLng(42.239201, -8.718139);//Ataque de la alianza PuertaEdificio
+        latLngAl = new LatLng(42.236961, -8.714323);//Ataque de la alianza PuertaEdificio
         double radius = 10;
 
         CircleOptions circleOptions = new CircleOptions()
@@ -245,13 +252,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLngAl));
         mMap.setOnInfoWindowClickListener(this);
 
-        double lati1 = 42.239201;
-        double longi1 = -8.718139;
-
-        location1ali = new Location("puertaedificio");
-        location1ali.setLatitude(lati1);
-        location1ali.setLongitude(longi1);
-        distancia1ali = locationGPS.distanceTo(location1ali);
+        location1ali = new Location("puertaprincipal");
+        location1ali.setLatitude(42.236961);
+        location1ali.setLongitude(-8.714323);
 //--------------------------------------------------------------------------------------------------------//
 
         latLngAl1 = new LatLng(42.236942, -8.712684);//Ataque de la alianza Telepizza
@@ -277,7 +280,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         location2ali = new Location("telepizza");
         location2ali.setLatitude(42.236942);
         location2ali.setLongitude(-8.712684);
-        distancia2ali = locationGPS.distanceTo(location2ali);
 //--------------------------------------------------------------------------------------------------------//
 
         latLngAl2 = new LatLng(42.23772, -8.712716);//Ataque de la alianza RotondaTV
@@ -303,7 +305,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         location3ali = new Location("rotondatv");
         location3ali.setLatitude(42.23772);
         location3ali.setLongitude(-8.712716);
-        distancia3ali = locationGPS.distanceTo(location3ali);
 //--------------------------------------------------------------------------------------------------------//
 
         latLngAl3 = new LatLng(42.237748, -8.714929);//Ataque de la alianza CaféSambor´s
@@ -329,7 +330,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         location4ali = new Location("sambors");
         location4ali.setLatitude(42.237748);
         location4ali.setLongitude(-8.714929);
-        distancia4ali = locationGPS.distanceTo(location4ali);
 //--------------------------------------------------------------------------------------------------------//
 
         latLngAl4 = new LatLng(42.237945, -8.716356);//Ataque de la alianza CerveceríaLatería
@@ -355,7 +355,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         location5ali = new Location("lateria");
         location5ali.setLatitude(42.237945);
         location5ali.setLongitude(-8.716356);
-        distancia5ali = locationGPS.distanceTo(location5ali);
 //--------------------------------------------------------------------------------------------------------//
 
         latLngAl5 = new LatLng(42.238749, -8.714991);//Ataque de la alianza RealeSeguros
@@ -381,7 +380,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         location6ali = new Location("reale");
         location6ali.setLatitude(42.238749);
         location6ali.setLongitude(-8.714991);
-        distancia6ali = locationGPS.distanceTo(location6ali);
 //--------------------------------------------------------------------------------------------------------//
 
         latLngAl6 = new LatLng(42.237968, -8.714398);//Ataque de la alianza Misterphone
@@ -407,7 +405,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         location7ali = new Location("misterphone");
         location7ali.setLatitude(42.237968);
         location7ali.setLongitude(-8.714398);
-        distancia7ali = locationGPS.distanceTo(location7ali);
 //--------------------------------------------------------------------------------------------------------//
 
         latLngAl7 = new LatLng(42.239073, -8.717032);//Ataque de la alianza MetropolGalicia
@@ -433,7 +430,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         location8ali = new Location("metropol");
         location8ali.setLatitude(42.239073);
         location8ali.setLongitude(-8.717032);
-        distancia8ali = locationGPS.distanceTo(location8ali);
     }
 
     //--------------------------------------------------------------------------------------------------------//
@@ -492,14 +488,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //Distancias entre tu posicion y la posicion de los reinos a conquistar
     //Cuando estes cerca de uno de los reinos hará un cambio de sonido
-    private void distanciaPanda(Location localitation) {
-        double latiP = 42.237439;
-        double longiP = -8.714226;
-        Location location1panda = new Location("panda");
-        location1panda.setLatitude(latiP);
-        location1panda.setLongitude(longiP);
+    private void distanciaReinos(Location localitation) {
         distancia1 = localitation.distanceTo(location1panda);
+        distancia2 = localitation.distanceTo(location2cata);
+        distancia3 = localitation.distanceTo(location3leg);
+
         lblPanda.setText(("Mts a Pandaria: " + distancia1));
+        lblCata.setText(("Mts a Cataclysm: " + distancia2));
+        lblLegion.setText(("Mts a Legion: " + distancia3));
 
         if(localitation.distanceTo(location1panda)<= metroscerca){
             musicafondo.stop();
@@ -509,40 +505,84 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             panda.stop();
             musicafondo.start();
         }
-    }
-
-    private void distanciaCataclysm(Location localitation) {
-        double latiC = 42.237706;
-        double longiC = -8.715687;
-        Location location2cata = new Location("cataclysm");
-        location2cata.setLatitude(latiC);
-        location2cata.setLongitude(longiC);
-        distancia2 = localitation.distanceTo(location2cata);
-        lblCata.setText(("Mts a Cataclysm: " + distancia2));
-
         if(localitation.distanceTo(location2cata)<= metroscerca){
+            musicafondo.stop();
             cata.start();
         }
         else if(localitation.distanceTo(location2cata)>metroslejos){
             cata.stop();
+            musicafondo.start();
+        }
+        if(localitation.distanceTo(location3leg)<= metroscerca){
+            musicafondo.stop();
+            legion.start();
+        }
+        else if(localitation.distanceTo(location3leg)>metroslejos){
+            legion.stop();
+            musicafondo.start();
         }
     }
 
-    private void distanciaLegion(Location localitation){
-        double latiL = 42.238956;
-        double longiL = -8.716143;
-        Location location3legion = new Location("legion");
-        location3legion.setLatitude(latiL);
-        location3legion.setLongitude(longiL);
-        distancia3 = localitation.distanceTo(location3legion);
-        lblLegion.setText(("Mts a Legion: " + distancia3));
+    private void distanciaAlianza(Location localitation){
+        distancia1ali = localitation.distanceTo(location1ali);
+        distancia2ali = localitation.distanceTo(location2ali);
+        distancia3ali = localitation.distanceTo(location3ali);
+        distancia4ali = localitation.distanceTo(location4ali);
+        distancia5ali = localitation.distanceTo(location5ali);
+        distancia6ali = localitation.distanceTo(location6ali);
+        distancia7ali = localitation.distanceTo(location7ali);
+        distancia8ali = localitation.distanceTo(location8ali);
 
-        if(localitation.distanceTo(location3legion)<= metroscerca){
-            legion.start();
+        if(localitation.distanceTo(location1ali) <= metroscerca){
+            musicafondo.stop();
+            guerra1.start();
+        }else if(localitation.distanceTo(location1ali) > metroslejos){
+            musicafondo.start();
         }
-        else if(localitation.distanceTo(location3legion)>metroslejos){
-            legion.stop();
+        if(localitation.distanceTo(location2ali) <= metroscerca){
+            musicafondo.stop();
+            guerra2.start();
+        }else if(localitation.distanceTo(location2ali) > metroslejos){
+            musicafondo.start();
         }
+        if(localitation.distanceTo(location3ali) <= metroscerca){
+            musicafondo.stop();
+            guerra1.start();
+        }else if(localitation.distanceTo(location3ali) > metroslejos){
+            musicafondo.start();
+        }
+        if(localitation.distanceTo(location4ali) <= metroscerca){
+            musicafondo.stop();
+            guerra2.start();
+        }else if(localitation.distanceTo(location4ali) > metroslejos){
+            musicafondo.start();
+        }
+        if(localitation.distanceTo(location5ali) <= metroscerca){
+            musicafondo.stop();
+            guerra1.start();
+        }else if(localitation.distanceTo(location5ali) > metroslejos){
+            musicafondo.start();
+        }
+        if(localitation.distanceTo(location6ali) <= metroscerca){
+            musicafondo.stop();
+            guerra2.start();
+        }else if(localitation.distanceTo(location6ali) > metroslejos){
+            musicafondo.start();
+        }
+        if(localitation.distanceTo(location7ali) <= metroscerca){
+            musicafondo.stop();
+            guerra1.start();
+        }else if(localitation.distanceTo(location7ali) > metroslejos){
+            musicafondo.start();
+        }
+        if(localitation.distanceTo(location8ali) <= metroscerca){
+            musicafondo.stop();
+            guerra2.start();
+        }else if(localitation.distanceTo(location8ali) > metroslejos){
+            musicafondo.start();
+        }
+
+
     }
 
     LocationListener locListener = new LocationListener(){
@@ -550,9 +590,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public void onLocationChanged(Location location) {
             actualizarUbicacion(location);
             localizacionAlianza(location);
-            distanciaPanda(location);
-            distanciaCataclysm(location);
-            distanciaLegion(location);
+            distanciaReinos(location);
+            distanciaAlianza(location);
             Log.i(TAG, "Lat " + location.getLatitude() + " Long " + location.getLongitude());
             lblLatitud.setText(("Lat: " +   location.getLatitude()));
             lblLongitud.setText(("Long: " + location.getLongitude()));
