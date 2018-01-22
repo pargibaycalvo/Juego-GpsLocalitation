@@ -62,7 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Location locationGPS;
     private Location location1ali, location2ali, location3ali, location4ali, location5ali, location6ali, location7ali, location8ali;
     double distancia1ali, distancia2ali, distancia3ali, distancia4ali, distancia5ali, distancia6ali, distancia7ali, distancia8ali;
-    double distancia1, distancia2, distancia3;
+    float distancia1, distancia2, distancia3;
     float metroscerca = 20;
     float metroslejos = 10;
 
@@ -491,6 +491,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     //Distancias entre tu posicion y la posicion de los reinos a conquistar
+    //Cuando estes cerca de uno de los reinos hará un cambio de sonido
     private void distanciaPanda(Location localitation) {
         double latiP = 42.237439;
         double longiP = -8.714226;
@@ -499,26 +500,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         location1panda.setLongitude(longiP);
         distancia1 = localitation.distanceTo(location1panda);
         lblPanda.setText(("Mts a Pandaria: " + distancia1));
+
+        if(localitation.distanceTo(location1panda)<= metroscerca){
+            musicafondo.stop();
+            panda.start();
+        }
+        else if(localitation.distanceTo(location1panda)>metroslejos){
+            panda.stop();
+            musicafondo.start();
+        }
     }
 
     private void distanciaCataclysm(Location localitation) {
         double latiC = 42.237706;
         double longiC = -8.715687;
-        Location location2cata = new Location("panda");
+        Location location2cata = new Location("cataclysm");
         location2cata.setLatitude(latiC);
         location2cata.setLongitude(longiC);
         distancia2 = localitation.distanceTo(location2cata);
         lblCata.setText(("Mts a Cataclysm: " + distancia2));
+
+        if(localitation.distanceTo(location2cata)<= metroscerca){
+            cata.start();
+        }
+        else if(localitation.distanceTo(location2cata)>metroslejos){
+            cata.stop();
+        }
     }
 
     private void distanciaLegion(Location localitation){
         double latiL = 42.238956;
         double longiL = -8.716143;
-        Location location3legion = new Location("panda");
+        Location location3legion = new Location("legion");
         location3legion.setLatitude(latiL);
         location3legion.setLongitude(longiL);
         distancia3 = localitation.distanceTo(location3legion);
         lblLegion.setText(("Mts a Legion: " + distancia3));
+
+        if(localitation.distanceTo(location3legion)<= metroscerca){
+            legion.start();
+        }
+        else if(localitation.distanceTo(location3legion)>metroslejos){
+            legion.stop();
+        }
     }
 
     LocationListener locListener = new LocationListener(){
