@@ -13,6 +13,7 @@
         android:layout_above="@+id/text1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:onClick="readQr"
         android:text="QR" />
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
