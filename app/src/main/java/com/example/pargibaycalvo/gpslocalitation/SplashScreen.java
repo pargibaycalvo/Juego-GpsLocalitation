@@ -25,6 +25,8 @@ public class SplashScreen extends AppCompatActivity implements View.OnClickListe
 
         Entrar = (Button) findViewById(R.id.button4);
         Entrar.setOnClickListener(this);
+        Salir = (Button) findViewById(R.id.button3);
+        Salir.setOnClickListener(this);
 
         //musica de fondo para la app
         musicainicio = MediaPlayer.create(this, R.raw.inicio);
@@ -46,6 +48,12 @@ public class SplashScreen extends AppCompatActivity implements View.OnClickListe
             case R.id.button4:
                 Intent intent = new Intent(this, MapsActivity.class);
                 startActivity(intent);
+                break;
+        }
+        switch (v.getId()){
+            case R.id.button3:
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                finish();
                 break;
         }
 
