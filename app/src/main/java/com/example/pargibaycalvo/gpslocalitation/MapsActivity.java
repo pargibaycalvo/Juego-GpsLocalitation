@@ -42,7 +42,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     int MAX_VOLUME = 100;
     int soundVolume = 90;
     float volume = (float) (1 - (Math.log(MAX_VOLUME - soundVolume) / Math.log(MAX_VOLUME)));
-    public static final int INTERVALO = 2000; //2 segundos para salir
+    public static final int INTERVALO = 2000;
     public long tiempoPrimerClick;
 
     //Declaraciones varias del programa
@@ -482,6 +482,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //mMap.animateCamera(miUbi);
     }
 
+    //Actualiza la ubicacion tuya cada cierto tiempo
     private void actualizarUbicacion(Location localitation){
         if(localitation!=null){
             lat= localitation.getLatitude();
@@ -527,6 +528,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    //Distancias entre tu posicion y puntos de asalto de la Alianza
+    //Estando cerca saltará un sonido de batalla
     private void distanciaAlianza(Location localitation){
         if(localitation.distanceTo(location1ali) <= metroscerca || localitation.distanceTo(location2ali) <= metroscerca ||
                 localitation.distanceTo(location3ali) <= metroscerca || localitation.distanceTo(location4ali) <= metroscerca){
@@ -553,7 +556,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         public void onLocationChanged(Location location) {
             actualizarUbicacion(location);
-            localizacionAlianza(location);
             distanciaReinos(location);
             distanciaAlianza(location);
             Log.i(TAG, "Lat " + location.getLatitude() + " Long " + location.getLongitude());
@@ -591,17 +593,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         actualizarUbicacion(location);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 15000, 0, locListener);
-
-    }
-
-    private void localizacionAlianza(Location localitation) {
-
-        if(localitation.distanceTo(location1ali) <= metroscerca){
-            guerra1.start();
-        }
-        else if(localitation.distanceTo(location1ali) >metroslejos){
-            guerra1.stop();
-        }
 
     }
 
