@@ -46,12 +46,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public long tiempoPrimerClick;
 
     //Declaraciones varias del programa
-    private MediaPlayer musicafondo, guerra1, guerra2, panda, cata, legion;
+    private MediaPlayer musicafondo, guerra1, guerra2, panda, cata, legion, lich;
     private GoogleMap mMap;
     private Marker marcador;
-    private LatLng latLng, latLng1, latLng2, castelao, coordenadas;
+    private LatLng latLng, latLng1, latLng2, latLng3, castelao, coordenadas;
     private LatLng latLngAl, latLngAl1, latLngAl2, latLngAl3, latLngAl4, latLngAl5, latLngAl6, latLngAl7;
-    private TextView lblLatitud, lblLongitud, lblPanda, lblCata, lblLegion;
+    private TextView lblLatitud, lblLongitud, lblPanda, lblCata, lblLegion, lblLichkng;
     private Button qr;
     double lat, lon;
     private static final int LOCATION_REQUEST_CODE = 1;
@@ -63,9 +63,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final long MIN_TIEMPO_ENTRE_UPDATES = 1000;
 
     //Declaraciones de distancias entre puntos tanto lideres como puntos de asalto
-    private Location location1panda, location2cata, location3leg;
+    private Location location1panda, location2cata, location3leg, location4kng;
     private Location location1ali, location2ali, location3ali, location4ali, location5ali, location6ali, location7ali, location8ali;
-    float distancia1, distancia2, distancia3;
+    float distancia1, distancia2, distancia3, distancia4;
     float metroscerca = 20;
     float metroslejos = 10;
 
@@ -83,6 +83,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         lblPanda = (TextView) findViewById(R.id.text3);
         lblCata = (TextView) findViewById(R.id.text4);
         lblLegion = (TextView) findViewById(R.id.text5);
+        lblLichkng = (TextView) findViewById(R.id.text6);
         qr = (Button) findViewById(R.id.button2);
         qr.setOnClickListener(this);
 
@@ -116,6 +117,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         panda = MediaPlayer.create(this, R.raw.panda);
         cata = MediaPlayer.create(this, R.raw.cata);
         legion = MediaPlayer.create(this, R.raw.legion);
+        lich = MediaPlayer.create(this, R.raw.lich);
+
     }
 
     @Override
@@ -171,7 +174,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .title("Mision 1. Encuentra a Sha de la Ira")
-                .snippet("Fundador: pargibay 6150")
+                .snippet("Objetivo: Entranarte")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.pandariam)));
         mMap.setOnInfoWindowClickListener(this);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -197,7 +200,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions()
                 .position(latLng1)
                 .title("Mision 2. Habla con Gamon para llegar a Legion")
-                .snippet("Fundador: pargibay 6150")
+                .snippet("Objetivo: Proporcionarte Armamento")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.cataclysm)));
         mMap.setOnInfoWindowClickListener(this);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng1));
@@ -231,7 +234,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         location3leg = new Location("legion");
         location3leg.setLatitude(42.238956);
         location3leg.setLongitude(-8.716143);
+//--------------------------------------------------------------------------------------------------------//
+
+        //Punto 4 KING
+        latLng3 = new LatLng(42.238447, -8.717890);//Bar Puerto
+        int radius3 = 10;
+
+        CircleOptions circleOptions3 = new CircleOptions()
+                .center(latLng3)
+                .radius(radius3)
+                .strokeColor(Color.parseColor("#3ADF00"))
+                .strokeWidth(4)
+                .fillColor(Color.parseColor("#AF249607"));
+        Circle circle3 = mMap.addCircle(circleOptions2);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng3, 17));
+
+        mMap.addMarker(new MarkerOptions()
+                .position(latLng3)
+                .title("Mision 4. Habla con el Rey Exánime")
+                .snippet("Objetivo: Reclutar ejército de muertos")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.lichking)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng3));
+        mMap.setOnInfoWindowClickListener(this);
+
+        location4kng = new Location("lich");
+        location4kng.setLatitude(42.238447);
+        location4kng.setLongitude(-8.717890);
     }
+
 
     //--------------------------------------------------------------------------------------------------------//
     //Puntos de ataque Alianza
@@ -498,10 +528,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         distancia1 = localitation.distanceTo(location1panda);
         distancia2 = localitation.distanceTo(location2cata);
         distancia3 = localitation.distanceTo(location3leg);
+        distancia4 = localitation.distanceTo(location4kng);
 
         lblPanda.setText(("Mts a Pandaria: " + distancia1));
         lblCata.setText(("Mts a Cataclysm: " + distancia2));
         lblLegion.setText(("Mts a Legion: " + distancia3));
+        lblLichkng.setText(("Mts a Lich: " + distancia4));
 
         if(localitation.distanceTo(location1panda)<= metroscerca){
             musicafondo.stop();
@@ -523,6 +555,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }else if(localitation.distanceTo(location3leg)>metroslejos){
                     legion.stop();
                     musicafondo.start();
+                }else{
+                    if(localitation.distanceTo(location4kng)<= metroscerca){
+                        musicafondo.stop();
+                        lich.start();
+                    }else if(localitation.distanceTo(location4kng)>metroslejos){
+                        lich.stop();
+                        musicafondo.start();
+                    }
                 }
             }
         }
