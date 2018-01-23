@@ -612,8 +612,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //boton funcional para la utilización del lector QR
     @Override
-    public void onClick(View view) {
-        switch (view.getId()){
+    public void onClick(View v) {
+        switch (v.getId()){
             case R.id.button2:
                 Intent intent = new Intent(this, SimpleScannerActivity.class);
                 startActivity(intent);
