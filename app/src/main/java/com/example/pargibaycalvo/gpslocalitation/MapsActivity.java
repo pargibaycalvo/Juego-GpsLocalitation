@@ -3,6 +3,7 @@ package com.example.pargibaycalvo.gpslocalitation;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -15,6 +16,8 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +36,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener{
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, View.OnClickListener {
 
     //Declaraciones, musica de fondo y tiempo de respuesta en salir de la app
     int MAX_VOLUME = 100;
@@ -49,6 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng latLng, latLng1, latLng2, castelao, coordenadas;
     private LatLng latLngAl, latLngAl1, latLngAl2, latLngAl3, latLngAl4, latLngAl5, latLngAl6, latLngAl7;
     private TextView lblLatitud, lblLongitud, lblPanda, lblCata, lblLegion;
+    private Button qr;
     double lat, lon;
     private static final int LOCATION_REQUEST_CODE = 1;
 
@@ -79,6 +83,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         lblPanda = (TextView) findViewById(R.id.text3);
         lblCata = (TextView) findViewById(R.id.text4);
         lblLegion = (TextView) findViewById(R.id.text5);
+        qr = (Button) findViewById(R.id.button2);
+        qr.setOnClickListener(this);
 
         //Permisos para poder localizarte vía GPS
         mLocMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -613,7 +619,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         tiempoPrimerClick = System.currentTimeMillis();
     }
 
-
-
-
+    //boton funcional para la utilización del lector QR
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.button2:
+                Intent intent = new Intent(this, SimpleScannerActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
 }
