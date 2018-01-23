@@ -7,5 +7,6 @@
     <string name="orgricastelao_full_snippet">La historia de Orgricastelao</string>
 
     <string name="txtButton">Escanea el QR</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
 
 </resources>
