@@ -148,6 +148,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @SuppressLint("SetTextI18n")
             public void onFinish() {
                 crono.setText("Ha ganado la Legion!");
+                finish();
             }
         }.start();
 
