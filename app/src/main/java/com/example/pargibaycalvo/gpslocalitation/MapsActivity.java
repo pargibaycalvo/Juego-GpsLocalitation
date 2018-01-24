@@ -536,32 +536,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         lblLichkng.setText(("Mts a Lich: " + distancia4));
 
         if(localitation.distanceTo(location1panda)<= metroscerca){
-            musicafondo.stop();
             panda.start();
         }else if(localitation.distanceTo(location1panda)>metroslejos){
             panda.stop();
-            musicafondo.start();
         }else{
             if(localitation.distanceTo(location2cata)<= metroscerca){
-                musicafondo.stop();
                 cata.start();
             }else if(localitation.distanceTo(location2cata)>metroslejos){
                 cata.stop();
-                musicafondo.start();
             }else{
                 if(localitation.distanceTo(location3leg)<= metroscerca){
-                    musicafondo.stop();
                     legion.start();
                 }else if(localitation.distanceTo(location3leg)>metroslejos){
                     legion.stop();
-                    musicafondo.start();
                 }else{
                     if(localitation.distanceTo(location4kng)<= metroscerca){
-                        musicafondo.stop();
                         lich.start();
                     }else if(localitation.distanceTo(location4kng)>metroslejos){
                         lich.stop();
-                        musicafondo.start();
                     }
                 }
             }
@@ -573,22 +565,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void distanciaAlianza(Location localitation){
         if(localitation.distanceTo(location1ali) <= metroscerca || localitation.distanceTo(location2ali) <= metroscerca ||
                 localitation.distanceTo(location3ali) <= metroscerca || localitation.distanceTo(location4ali) <= metroscerca){
-            musicafondo.stop();
             guerra1.start();
         }else if(localitation.distanceTo(location1ali) > metroslejos || localitation.distanceTo(location2ali) > metroslejos ||
                 localitation.distanceTo(location3ali) > metroslejos || localitation.distanceTo(location4ali) > metroslejos){
             guerra1.stop();
-            musicafondo.start();
         }
 
         if(localitation.distanceTo(location5ali) <= metroscerca || localitation.distanceTo(location6ali) <= metroscerca ||
                 localitation.distanceTo(location7ali) <= metroscerca || localitation.distanceTo(location8ali) <= metroscerca){
-            musicafondo.stop();
             guerra2.start();
         }else if(localitation.distanceTo(location5ali) > metroslejos || localitation.distanceTo(location6ali) > metroslejos ||
                 localitation.distanceTo(location7ali) > metroslejos || localitation.distanceTo(location8ali) > metroslejos){
             guerra2.stop();
-            musicafondo.start();
         }
     }
 
