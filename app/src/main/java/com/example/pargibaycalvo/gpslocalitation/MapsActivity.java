@@ -683,6 +683,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }else{
             Toast.makeText(this, "Por la Horda", Toast.LENGTH_SHORT).show();
             musicafondo.stop();
+            panda.stop();
+            legion.stop();
+            guerra2.stop();
+            guerra1.stop();
+            cata.stop();
+            lich.stop();
         }
         tiempoPrimerClick = System.currentTimeMillis();
     }
@@ -694,7 +700,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (requestCode == codigo) {
                 txtqr.setText(data.getExtras().getString("retorno"));
                 intentactual.putExtra("contador",data.getExtras().getInt("contador"));
-                Toast.makeText(this, "Contador: "+intentactual.getExtras().getInt("contador"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Has escaneado QR: "+intentactual.getExtras().getInt("contador"), Toast.LENGTH_SHORT).show();
             }
         }
     }
