@@ -36,7 +36,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, View.OnClickListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener{
 
     //Declaraciones, musica de fondo y tiempo de respuesta en salir de la app
     int MAX_VOLUME = 100;
@@ -51,7 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker marcador;
     private LatLng latLng, latLng1, latLng2, latLng3, castelao, coordenadas;
     private LatLng latLngAl, latLngAl1, latLngAl2, latLngAl3, latLngAl4, latLngAl5, latLngAl6, latLngAl7;
-    private TextView lblLatitud, lblLongitud, lblPanda, lblCata, lblLegion, lblLichkng;
+    private TextView lblLatitud, lblLongitud, lblPanda, lblCata, lblLegion, lblLichkng, txtqr;
     private Button qr;
     double lat, lon;
     private static final int LOCATION_REQUEST_CODE = 1;
@@ -69,6 +69,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     float metroscerca = 20;
     float metroslejos = 10;
 
+    //Declaraciones para funcionamiento del lector QR
+    private  final static int codigo = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -84,8 +87,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         lblCata = (TextView) findViewById(R.id.text4);
         lblLegion = (TextView) findViewById(R.id.text5);
         lblLichkng = (TextView) findViewById(R.id.text6);
+        txtqr = (TextView) findViewById(R.id.textQR);
         qr = (Button) findViewById(R.id.button2);
-        qr.setOnClickListener(this);
 
         //Permisos para poder localizarte vía GPS
         mLocMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -152,6 +155,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
         mMap.getUiSettings().setZoomControlsEnabled(true);
+
+        qr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MapsActivity.this, SimpleScanner.class);
+                startActivityForResult(intent,codigo);
+            }
+        });
+
     }
 
     //--------------------------------------------------------------------------------------------------------//
@@ -638,14 +650,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         tiempoPrimerClick = System.currentTimeMillis();
     }
 
-    //boton funcional para la utilización del lector QR
     @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.button2:
-                Intent intent = new Intent(this, SimpleScannerActivity.class);
-                startActivity(intent);
-                break;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Comprobamos si el resultado de la segunda actividad es "RESULT_OK".
+        if (resultCode == RESULT_OK) {
+            // Comprobamos el codigo de nuestra llamada
+            if (requestCode == codigo) {
+                // Recojemos el dato que viene en el Intent (se pasa por parámetro con el nombre de data)
+                // Rellenamos el TextView
+                txtqr.setText(data.getExtras().getString("retorno"));
+
+            }
         }
     }
 }

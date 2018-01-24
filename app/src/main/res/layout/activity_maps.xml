@@ -50,7 +50,6 @@
         android:id="@+id/text4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_above="@+id/button2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -85,5 +84,13 @@
         android:layout_alignParentStart="true"
         android:layout_marginBottom="36dp"
         android:text="Tu Posición en long: 0" />
+
+    <TextView
+        android:id="@+id/textQR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="QR" />
 
 </RelativeLayout>

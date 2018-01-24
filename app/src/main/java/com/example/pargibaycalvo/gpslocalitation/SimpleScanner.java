@@ -1,9 +1,5 @@
 package com.example.pargibaycalvo.gpslocalitation;
 
-/**
- * Created by pargibaycalvo on 22/1/18.
- */
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,7 +13,7 @@ import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class SimpleScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+public class SimpleScanner extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
     static final String TAG = "escaneoQR";
 
