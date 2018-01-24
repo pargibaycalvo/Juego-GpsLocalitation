@@ -549,27 +549,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if(localitation.distanceTo(location1panda)<= metroscerca){
             panda.start();
-        }else if(localitation.distanceTo(location1panda)>metroslejos){
+        }else if(localitation.distanceTo(location1panda)>metroslejos) {
             panda.stop();
-        }else{
-            if(localitation.distanceTo(location2cata)<= metroscerca){
-                cata.start();
-            }else if(localitation.distanceTo(location2cata)>metroslejos){
-                cata.stop();
-            }else{
-                if(localitation.distanceTo(location3leg)<= metroscerca){
-                    legion.start();
-                }else if(localitation.distanceTo(location3leg)>metroslejos){
-                    legion.stop();
-                }else{
-                    if(localitation.distanceTo(location4kng)<= metroscerca){
-                        lich.start();
-                    }else if(localitation.distanceTo(location4kng)>metroslejos){
-                        lich.stop();
-                    }
-                }
-            }
         }
+
+        if(localitation.distanceTo(location2cata)<= metroscerca){
+            cata.start();
+        }else if(localitation.distanceTo(location2cata)>metroslejos){
+            cata.stop();
+        }
+
+        if(localitation.distanceTo(location3leg)<= metroscerca){
+            legion.start();
+        }else if(localitation.distanceTo(location3leg)>metroslejos){
+            legion.stop();
+        }
+
+        if(localitation.distanceTo(location4kng)<= metroscerca){
+            lich.start();
+        }else if(localitation.distanceTo(location4kng)>metroslejos){
+            lich.stop();
+        }
+
     }
 
     //Distancias entre tu posicion y puntos de asalto de la Alianza
