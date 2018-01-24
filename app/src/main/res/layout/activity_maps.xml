@@ -30,6 +30,7 @@
 
     <TextView
         android:id="@+id/text1"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/text2"
@@ -39,6 +40,7 @@
 
     <TextView
         android:id="@+id/text3"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/text4"
@@ -48,6 +50,7 @@
 
     <TextView
         android:id="@+id/text4"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button2"
@@ -58,6 +61,7 @@
 
     <TextView
         android:id="@+id/text6"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/text3"
@@ -67,6 +71,7 @@
 
     <TextView
         android:id="@+id/text5"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button2"
@@ -77,6 +82,7 @@
 
     <TextView
         android:id="@+id/text2"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -87,6 +93,7 @@
 
     <TextView
         android:id="@+id/textQR"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -99,6 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textQR"
         android:layout_centerHorizontal="true"
+        android:textStyle="bold"
         android:text="Cronómetro" />
 
 
