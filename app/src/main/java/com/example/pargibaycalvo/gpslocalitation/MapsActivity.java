@@ -257,8 +257,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .radius(radius3)
                 .strokeColor(Color.parseColor("#3ADF00"))
                 .strokeWidth(4)
-                .fillColor(Color.parseColor("#AF249607"));
-        Circle circle3 = mMap.addCircle(circleOptions2);
+                .fillColor(Color.parseColor("#A440FFEF"));
+        Circle circle3 = mMap.addCircle(circleOptions3);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng3, 17));
 
         mMap.addMarker(new MarkerOptions()
@@ -653,12 +653,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // Comprobamos si el resultado de la segunda actividad es "RESULT_OK".
         if (resultCode == RESULT_OK) {
-            // Comprobamos el codigo de nuestra llamada
             if (requestCode == codigo) {
-                // Recojemos el dato que viene en el Intent (se pasa por parámetro con el nombre de data)
-                // Rellenamos el TextView
                 txtqr.setText(data.getExtras().getString("retorno"));
 
             }
