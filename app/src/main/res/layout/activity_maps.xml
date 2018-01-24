@@ -91,6 +91,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="QR" />
+        android:text="LOGROS CONSEGUIDOS QR" />
+
+    <TextView
+        android:id="@+id/textCrono"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textQR"
+        android:layout_centerHorizontal="true"
+        android:text="Cronómetro" />
+
 
 </RelativeLayout>

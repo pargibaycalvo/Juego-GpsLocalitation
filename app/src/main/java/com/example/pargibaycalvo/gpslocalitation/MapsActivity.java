@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
+import android.os.CountDownTimer;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -35,12 +36,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener{
 
     //Declaraciones, musica de fondo y tiempo de respuesta en salir de la app
     int MAX_VOLUME = 100;
-    int soundVolume = 90;
+    int soundVolume = 50;
     float volume = (float) (1 - (Math.log(MAX_VOLUME - soundVolume) / Math.log(MAX_VOLUME)));
     public static final int INTERVALO = 2000;
     public long tiempoPrimerClick;
@@ -51,7 +53,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker marcador;
     private LatLng latLng, latLng1, latLng2, latLng3, castelao, coordenadas;
     private LatLng latLngAl, latLngAl1, latLngAl2, latLngAl3, latLngAl4, latLngAl5, latLngAl6, latLngAl7;
-    private TextView lblLatitud, lblLongitud, lblPanda, lblCata, lblLegion, lblLichkng, txtqr;
+    private TextView lblLatitud, lblLongitud, lblPanda, lblCata, lblLegion, lblLichkng, txtqr, crono;
     private Button qr;
     double lat, lon;
     private static final int LOCATION_REQUEST_CODE = 1;
@@ -72,6 +74,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //Declaraciones para funcionamiento del lector QR
     private  final static int codigo = 0;
 
+    //Declaraciones cuenta atras
+    private static final String FORMAT = "%02d:%02d:%02d";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -88,6 +93,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         lblLegion = (TextView) findViewById(R.id.text5);
         lblLichkng = (TextView) findViewById(R.id.text6);
         txtqr = (TextView) findViewById(R.id.textQR);
+        crono = (TextView) findViewById(R.id.textCrono);
         qr = (Button) findViewById(R.id.button2);
 
         //Permisos para poder localizarte vía GPS
@@ -121,6 +127,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         cata = MediaPlayer.create(this, R.raw.cata);
         legion = MediaPlayer.create(this, R.raw.legion);
         lich = MediaPlayer.create(this, R.raw.lich);
+
+        //cuenta atras para finalizar el juego
+        new CountDownTimer(2706900, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+
+                crono.setText(""+String.format(FORMAT,
+                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+            }
+
+            public void onFinish() {
+                crono.setText("Ha ganado la Legion!");
+            }
+        }.start();
 
     }
 
@@ -546,6 +570,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         lblCata.setText(("Mts a Cataclysm: " + distancia2));
         lblLegion.setText(("Mts a Legion: " + distancia3));
         lblLichkng.setText(("Mts a Lich: " + distancia4));
+
 
         if(localitation.distanceTo(location1panda)<= metroscerca){
             panda.start();
