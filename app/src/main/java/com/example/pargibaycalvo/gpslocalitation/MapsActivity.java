@@ -586,6 +586,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if(localitation.distanceTo(location3leg)<= metroscerca){
             legion.start();
+            crono.setText("Encuentra el QR y habrás ganado la batalla. Por la HORDA!");
         }else if(localitation.distanceTo(location3leg)>metroslejos){
             legion.stop();
         }
