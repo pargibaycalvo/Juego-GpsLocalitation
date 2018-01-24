@@ -73,6 +73,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //Declaraciones para funcionamiento del lector QR
     private  final static int codigo = 0;
+    private Intent intentactual;
 
     //Declaraciones cuenta atras
     private static final String FORMAT = "%02d:%02d:%02d";
@@ -95,6 +96,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         txtqr = (TextView) findViewById(R.id.textQR);
         crono = (TextView) findViewById(R.id.textCrono);
         qr = (Button) findViewById(R.id.button2);
+
+        intentactual = this.getIntent();
 
         //Permisos para poder localizarte vía GPS
         mLocMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -131,6 +134,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //cuenta atras para finalizar el juego
         new CountDownTimer(2706900, 1000) {
 
+            @SuppressLint({"DefaultLocale", "SetTextI18n"})
             public void onTick(long millisUntilFinished) {
 
                 crono.setText(""+String.format(FORMAT,
@@ -141,6 +145,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
             }
 
+            @SuppressLint("SetTextI18n")
             public void onFinish() {
                 crono.setText("Ha ganado la Legion!");
             }
@@ -184,6 +189,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MapsActivity.this, SimpleScanner.class);
+                if (intentactual.getExtras() != null) {
+                    intent.putExtra("contador",intentactual.getExtras().getInt("contador"));
+                }else{
+                    intent.putExtra("contador",0);
+                }
                 startActivityForResult(intent,codigo);
             }
         });
@@ -683,7 +693,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (resultCode == RESULT_OK) {
             if (requestCode == codigo) {
                 txtqr.setText(data.getExtras().getString("retorno"));
-
+                intentactual.putExtra("contador",data.getExtras().getInt("contador"));
+                Toast.makeText(this, "Contador: "+intentactual.getExtras().getInt("contador"), Toast.LENGTH_SHORT).show();
             }
         }
     }

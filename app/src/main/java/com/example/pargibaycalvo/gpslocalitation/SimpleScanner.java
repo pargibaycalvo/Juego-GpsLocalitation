@@ -16,6 +16,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class SimpleScanner extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
     static final String TAG = "escaneoQR";
+    private Intent intentActual;
 
     private static final int MY_PERMISSIONS = 1 ;
 
@@ -24,6 +25,7 @@ public class SimpleScanner extends AppCompatActivity implements ZXingScannerView
         super.onCreate(savedInstanceState);
         mScannerView = new ZXingScannerView(this);
         setContentView(mScannerView);
+        intentActual=this.getIntent();
         Log.v(TAG, "Inicializado scan");
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
@@ -60,6 +62,7 @@ public class SimpleScanner extends AppCompatActivity implements ZXingScannerView
         mScannerView.resumeCameraPreview(this);
         Intent intento= new Intent();
         intento.putExtra("retorno", rawResult.getText() );
+        intento.putExtra("contador",intentActual.getExtras().getInt("contador")+1);
         setResult(RESULT_OK, intento);
         finish();
 
