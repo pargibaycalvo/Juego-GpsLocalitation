@@ -30,6 +30,7 @@
 
     <TextView
         android:id="@+id/text1"
+        android:textSize="15dp"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -83,6 +84,7 @@
     <TextView
         android:id="@+id/text2"
         android:textStyle="bold"
+        android:textSize="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -107,6 +109,7 @@
         android:layout_below="@+id/textQR"
         android:layout_centerHorizontal="true"
         android:textStyle="bold"
+        android:textSize="20dp"
         android:text="Cronómetro" />
 
 
