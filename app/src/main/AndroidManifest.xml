@@ -35,7 +35,7 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
         <activity
             android:name=".SplashScreen"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
@@ -45,7 +45,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SimpleScanner"></activity>
+        <activity android:name=".SimpleScanner" />
+        <activity android:name=".WinActivity"></activity>
     </application>
 
 </manifest>

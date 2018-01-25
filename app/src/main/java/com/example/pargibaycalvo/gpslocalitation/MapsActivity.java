@@ -2,7 +2,9 @@ package com.example.pargibaycalvo.gpslocalitation;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -19,6 +21,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,6 +78,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //Declaraciones para funcionamiento del lector QR
     private  final static int codigo = 0;
     private Intent intentactual;
+    int victoria = 0;
+    int qrlegion = 0, qrpanda = 0, qrcata = 0, qrlich = 0;
 
     //Declaraciones cuenta atras
     private static final String FORMAT = "%02d:%02d:%02d";
@@ -160,6 +165,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         miUbicacion();
         reinosConquistar();
+
         posicionAlianza();
 
         // Puntero por defecto con permisos de administrador ORGRICASTELAO
@@ -759,10 +765,57 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == codigo) {
-                txtqr.setText(data.getExtras().getString("retorno"));
+                qrCapture(data.getExtras().getString("retorno"));
+                //txtqr.setText(data.getExtras().getString("retorno"));
                 intentactual.putExtra("contador",data.getExtras().getInt("contador"));
                 Toast.makeText(this, "Has escaneado QR: "+intentactual.getExtras().getInt("contador"), Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void qrCapture(String retorno) {
+
+        if (retorno.contains("1Objetivo")) {
+            txtqr.setText(retorno);
+            qrpanda++;
+            victoria++;
+            if (qrpanda >=2 ){
+                txtqr.setText("LOGRO YA CONOCIDO: "+retorno);
+                victoria--;
+            }
+        } else if (retorno.contains("2Objetivo")) {
+            txtqr.setText(retorno);
+            qrcata++;
+            victoria++;
+            if (qrcata >=2 ){
+                txtqr.setText("LOGRO YA CONOCIDO: "+retorno);
+                victoria--;
+            }
+        } else if (retorno.contains("3Objetivo")) {
+            txtqr.setText(retorno);
+            qrlich++;
+            victoria++;
+            if (qrlich >=2 ){
+                txtqr.setText("LOGRO YA CONOCIDO: "+retorno);
+                victoria--;
+            }
+        } else if (retorno.contains("Titan")) {
+            txtqr.setText(retorno);
+            qrlegion++;
+            victoria++;
+            if (qrlegion >=2 ){
+                txtqr.setText("LOGRO YA CONOCIDO: "+retorno);
+                victoria--;
+            }
+        } else {
+            txtqr.setText("QR INCORRECTO");
+        }
+
+        if (victoria == 4) {
+            Intent intent = new Intent(this.getApplicationContext(), WinActivity.class);
+            startActivity(intent);
+            Toast.makeText(this, "HAS VENCIDO AL BOSS!", Toast.LENGTH_LONG);
+        }
+
     }
 }
