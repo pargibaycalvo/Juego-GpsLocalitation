@@ -572,93 +572,130 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //Distancias entre tu posicion y la posicion de los reinos a conquistar
     //Cuando estes cerca de uno de los reinos hará un cambio de sonido
-    private void distanciaReinos(Location localitation) {
+    private void distanciaPanda(Location localitation) {
         distancia1 = localitation.distanceTo(location1panda);
-        distancia2 = localitation.distanceTo(location2cata);
-        distancia3 = localitation.distanceTo(location3leg);
-        distancia4 = localitation.distanceTo(location4kng);
         lblPanda.setText(("Mts a Pandaria: " + distancia1));
-        lblCata.setText(("Mts a Cataclysm: " + distancia2));
-        lblLegion.setText(("Mts a Legion: " + distancia3));
-        lblLichkng.setText(("Mts a Lich: " + distancia4));
-
-        if(localitation.distanceTo(location1panda)<= metroscerca){
+        if (localitation.distanceTo(location1panda) <= metroscerca) {
             panda.start();
-        }else if(localitation.distanceTo(location1panda)>metroslejos) {
-            panda.stop();}
-        if(localitation.distanceTo(location2cata)<= metroscerca){
+        } else if (localitation.distanceTo(location1panda) > metroslejos) {
+            panda.stop();
+        }
+    }
+    private void distanciaCata(Location localitation) {
+        distancia2 = localitation.distanceTo(location2cata);
+        lblCata.setText(("Mts a Cataclysm: " + distancia2));
+        if (localitation.distanceTo(location2cata) <= metroscerca) {
             cata.start();
-        }else if(localitation.distanceTo(location2cata)>metroslejos){
-            cata.stop();}
-        if(localitation.distanceTo(location3leg)<= metroscerca){
+        } else if (localitation.distanceTo(location2cata) > metroslejos) {
+            cata.stop();
+        }
+    }
+    private void distanciaLeg(Location localitation) {
+        distancia3 = localitation.distanceTo(location3leg);
+        lblLegion.setText(("Mts a Legion: " + distancia3));
+        if (localitation.distanceTo(location3leg) <= metroscerca) {
             legion.start();
             crono.setText("Encuentra el QR y habrás ganado la batalla. Por la HORDA!");
-        }else if(localitation.distanceTo(location3leg)>metroslejos){
-            legion.stop();}
-        if(localitation.distanceTo(location4kng)<= metroscerca){
+        } else if (localitation.distanceTo(location3leg) > metroslejos) {
+            legion.stop();
+        }
+    }
+    private void distanciaLich(Location localitation) {
+        distancia4 = localitation.distanceTo(location4kng);
+        lblLichkng.setText(("Mts a Lich: " + distancia4));
+        if (localitation.distanceTo(location4kng) <= metroscerca) {
             lich.start();
-        }else if(localitation.distanceTo(location4kng)>metroslejos){
-            lich.stop();}
-
+        } else if (localitation.distanceTo(location4kng) > metroslejos) {
+            lich.stop();
+        }
     }
 
     //Distancias entre tu posicion y puntos de asalto de la Alianza
     //Estando cerca saltará un sonido de batalla
-    private void distanciaAlianzaEste(Location localitation){
+    private void distanciaAlianza1(Location localitation) {
         dist1ali = localitation.distanceTo(location1ali);
+        if (localitation.distanceTo(location1ali) <= metroscerca) {
+            guerra1.start();
+        } else if (localitation.distanceTo(location1ali) > metroslejos) {
+            guerra1.stop();
+        }
+    }
+    private void distanciaAlianza2(Location localitation) {
         dist2ali = localitation.distanceTo(location2ali);
+        if (localitation.distanceTo(location2ali) <= metroscerca) {
+            guerra1.start();
+        } else if (localitation.distanceTo(location2ali) > metroslejos) {
+            guerra1.stop();
+        }
+    }
+    private void distanciaAlianza3(Location localitation) {
         dist3ali = localitation.distanceTo(location3ali);
+        if (localitation.distanceTo(location3ali) <= metroscerca) {
+            guerra1.start();
+        } else if (localitation.distanceTo(location3ali) > metroslejos) {
+            guerra1.stop();
+        }
+    }
+    private void distanciaAlianza4(Location localitation){
         dist4ali = localitation.distanceTo(location4ali);
-
-        if(localitation.distanceTo(location1ali) <= metroscerca){
-            guerra1.start();
-        }else if(localitation.distanceTo(location1ali) > metroslejos){
-            guerra1.stop();}
-        if(localitation.distanceTo(location2ali) <= metroscerca){
-            guerra1.start();
-        }else if(localitation.distanceTo(location2ali) > metroslejos){
-            guerra1.stop();}
-        if(localitation.distanceTo(location3ali) <= metroscerca){
-            guerra1.start();
-        }else if(localitation.distanceTo(location3ali) > metroslejos){
-            guerra1.stop();}
         if(localitation.distanceTo(location4ali) <= metroscerca){
             guerra1.start();
         }else if(localitation.distanceTo(location4ali) > metroslejos){
             guerra1.stop();}
     }
 
-    private void distanciaAlianzaOeste(Location localitation){
+    private void distanciaAlianza5(Location localitation) {
         dist5ali = localitation.distanceTo(location5ali);
+        if (localitation.distanceTo(location5ali) <= metroscerca) {
+            guerra2.start();
+        } else if (localitation.distanceTo(location5ali) > metroslejos) {
+            guerra2.stop();
+        }
+    }
+    private void distanciaAlianza6(Location localitation) {
         dist6ali = localitation.distanceTo(location6ali);
+        if (localitation.distanceTo(location6ali) <= metroscerca) {
+            guerra2.start();
+        } else if (localitation.distanceTo(location6ali) > metroslejos) {
+            guerra2.stop();
+        }
+    }
+    private void distanciaAlianza7(Location localitation) {
         dist7ali = localitation.distanceTo(location7ali);
+        if (localitation.distanceTo(location7ali) <= metroscerca) {
+            guerra2.start();
+        } else if (localitation.distanceTo(location7ali) > metroslejos) {
+            guerra2.stop();
+        }
+    }
+    private void distanciaAlianza8(Location localitation) {
         dist8ali = localitation.distanceTo(location8ali);
-
-        if(localitation.distanceTo(location5ali) <= metroscerca){
-            guerra2.start();
-        }else if(localitation.distanceTo(location5ali) > metroslejos){
-            guerra2.stop();}
-        if(localitation.distanceTo(location6ali) <= metroscerca){
-            guerra2.start();
-        }else if(localitation.distanceTo(location6ali) > metroslejos){
-            guerra2.stop();}
-        if(localitation.distanceTo(location7ali) <= metroscerca){
-            guerra2.start();
-        }else if(localitation.distanceTo(location7ali) > metroslejos){
-            guerra2.stop();}
         if(localitation.distanceTo(location8ali) <= metroscerca){
             guerra2.start();
-        }else if(localitation.distanceTo(location8ali) > metroslejos){
-            guerra2.stop();}
+        } else if (localitation.distanceTo(location8ali) > metroslejos){
+            guerra2.stop();
+        }
     }
 
     LocationListener locListener = new LocationListener(){
         @Override
         public void onLocationChanged(Location location) {
             actualizarUbicacion(location);
-            distanciaReinos(location);
-            distanciaAlianzaEste(location);
-            distanciaAlianzaOeste(location);
+            distanciaPanda(location);
+            distanciaCata(location);
+            distanciaLeg(location);
+            distanciaLich(location);
+
+            distanciaAlianza1(location);
+            distanciaAlianza2(location);
+            distanciaAlianza3(location);
+            distanciaAlianza4(location);
+            distanciaAlianza5(location);
+            distanciaAlianza6(location);
+            distanciaAlianza7(location);
+            distanciaAlianza8(location);
+
+
             Log.i(TAG, "Lat " + location.getLatitude() + " Long " + location.getLongitude());
             lblLatitud.setText(("Lat: " +   location.getLatitude()));
             lblLongitud.setText(("Long: " + location.getLongitude()));
