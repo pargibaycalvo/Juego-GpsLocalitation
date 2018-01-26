@@ -46,7 +46,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".SimpleScanner" />
-        <activity android:name=".WinActivity"></activity>
+        <activity android:name=".WinActivity" />
+        <activity android:name=".WastedActivity"></activity>
     </application>
 
 </manifest>

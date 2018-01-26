@@ -83,6 +83,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     //Declaraciones cuenta atras
     private static final String FORMAT = "%02d:%02d:%02d";
+    Context contexto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +112,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.e(TAG, "No se tienen permisos necesarios!, se requieren.");
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 225);
             return;
-        }else{
+        } else {
             Log.i(TAG, "Permisos necesarios OK!.");
             mLocMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIEMPO_ENTRE_UPDATES, MIN_CAMBIO_DISTANCIA_PARA_UPDATES, locListener, Looper.getMainLooper());
         }
@@ -122,7 +123,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         musicafondo = MediaPlayer.create(this, R.raw.orgricaste);
         musicafondo.setLooping(true);
         musicafondo.setVolume(volume, volume);
-        new Timer().schedule(new TimerTask(){
+        new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
                 musicafondo.start();
@@ -137,13 +138,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         legion = MediaPlayer.create(this, R.raw.legion);
         lich = MediaPlayer.create(this, R.raw.lich);
 
+        contexto = this.getApplicationContext();
+
         //cuenta atras para finalizar el juego
-        new CountDownTimer(2706900, 1000) {
+        new CountDownTimer(10000, 1000) {
 
             @SuppressLint({"DefaultLocale", "SetTextI18n"})
             public void onTick(long millisUntilFinished) {
 
-                crono.setText(""+String.format(FORMAT,
+                crono.setText("" + String.format(FORMAT,
                         TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
                         TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
                                 TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
@@ -153,11 +156,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @SuppressLint("SetTextI18n")
             public void onFinish() {
-                crono.setText("Ha ganado la Legion!");
-                finish();
+                    Intent intent = new Intent(getApplicationContext(), WastedActivity.class);
+                    startActivity(intent);
             }
-        }.start();
 
+        }.start();
     }
 
     @Override
@@ -814,7 +817,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (victoria == 4) {
             Intent intent = new Intent(this.getApplicationContext(), WinActivity.class);
             startActivity(intent);
-            Toast.makeText(this, "HAS VENCIDO AL BOSS!", Toast.LENGTH_LONG);
         }
 
     }
