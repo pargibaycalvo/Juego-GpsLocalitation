@@ -98,6 +98,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        //Declaraciones de cuadros de textos y boton
         lblLatitud = (TextView) findViewById(R.id.text1);
         lblLongitud = (TextView) findViewById(R.id.text2);
         lblPanda = (TextView) findViewById(R.id.text3);
@@ -144,7 +145,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         contexto = this.getApplicationContext();
 
-        //cuenta atras para finalizar el juego
+        //cuenta atras para finalizar el juego tiempo de 45min
+        //al finalizar si no ganas salta una nueva ventana con gif
         new CountDownTimer(2706900, 1000) {
 
             @SuppressLint({"DefaultLocale", "SetTextI18n"})
@@ -171,9 +173,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        //ejecucion de metodos
         miUbicacion();
         reinosConquistar();
-
         posicionAlianza();
 
         // Puntero por defecto con permisos de administrador ORGRICASTELAO
@@ -201,6 +204,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
+        //funcion al pulsar el boton de qr
         qr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -563,15 +567,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     //Posicion Actual del Usuario (conectarse vía GPS)
+    //Cada ciertos segundos actualiza la cámara y te lleva al punto de tu posicion
     private void localizacionActual(double lat, double lon){
         coordenadas= new LatLng(lat,lon);
-        //CameraUpdate miUbi= CameraUpdateFactory.newLatLngZoom(coordenadas, 16);
+        CameraUpdate miUbi= CameraUpdateFactory.newLatLngZoom(coordenadas, 16);
         if(marcador!=null)marcador.remove();
         marcador=mMap.addMarker(new MarkerOptions()
                 .position(coordenadas)
                 .title("Tú")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.pj)));
-        //mMap.animateCamera(miUbi);
+        mMap.animateCamera(miUbi);
     }
 
     //Actualiza la ubicacion tuya cada cierto tiempo
@@ -691,6 +696,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    //Metodos para tener nuestra localizacion exacta
     LocationListener locListener = new LocationListener(){
         @Override
         public void onLocationChanged(Location location) {
@@ -734,6 +740,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     };
 
+    //Permisos para que nos pueda dar nuestra posicion
     private void miUbicacion(){
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -768,19 +775,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         tiempoPrimerClick = System.currentTimeMillis();
     }
 
+    //resultado al leer los qr
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == codigo) {
                 qrCapture(data.getExtras().getString("retorno"));
-                //txtqr.setText(data.getExtras().getString("retorno"));
                 intentactual.putExtra("contador",data.getExtras().getInt("contador"));
                 Toast.makeText(this, "Has escaneado QR: "+intentactual.getExtras().getInt("contador"), Toast.LENGTH_SHORT).show();
             }
         }
     }
 
+    //lectura de los qr específicos (no vale cualquier qr), ocultar los marker al leer los qr, si lees un qr repetido no cuenta
+    //cuando leas los 4 qr juego finalizado con pantalla de victoria
     private void qrCapture(String retorno) {
 
         if (retorno.contains("1Objetivo")) {
