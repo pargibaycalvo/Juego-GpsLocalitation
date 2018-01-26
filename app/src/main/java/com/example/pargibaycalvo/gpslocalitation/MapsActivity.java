@@ -75,6 +75,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     float metroscerca = 20;
     float metroslejos = 10;
 
+    //Declaraciones Marcadores
+    private Marker mpanda, mlegion, mcata, mlich;
+    private Circle cir1, cir2, cir3, cir4;
+
     //Declaraciones para funcionamiento del lector QR
     private  final static int codigo = 0;
     private Intent intentactual;
@@ -226,10 +230,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .strokeColor(Color.parseColor("#0D47A1"))
                 .strokeWidth(4)
                 .fillColor(Color.parseColor("#AF4046FF"));
-        Circle circle = mMap.addCircle(circleOptions);
+        cir1 = mMap.addCircle(circleOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
 
-        mMap.addMarker(new MarkerOptions()
+        mpanda = mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .title("Mision 1. Encuentra a Sha de la Ira")
                 .snippet("Objetivo: Entranarte")
@@ -252,10 +256,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .strokeColor(Color.parseColor("#FF0000"))
                 .strokeWidth(4)
                 .fillColor(Color.parseColor("#BBFF404A"));
-        Circle circle1 = mMap.addCircle(circleOptions1);
+        cir2 = mMap.addCircle(circleOptions1);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng1, 17));
 
-        mMap.addMarker(new MarkerOptions()
+        mcata = mMap.addMarker(new MarkerOptions()
                 .position(latLng1)
                 .title("Mision 2. Habla con Gamon para llegar a Legion")
                 .snippet("Objetivo: Proporcionarte Armamento")
@@ -278,10 +282,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .strokeColor(Color.parseColor("#3ADF00"))
                 .strokeWidth(4)
                 .fillColor(Color.parseColor("#AF249607"));
-        Circle circle2 = mMap.addCircle(circleOptions2);
+        cir3 = mMap.addCircle(circleOptions2);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng2, 17));
 
-        mMap.addMarker(new MarkerOptions()
+        mlegion = mMap.addMarker(new MarkerOptions()
                 .position(latLng2)
                 .title("Mision 3. Elimina a Titan de Argus")
                 .snippet("Fundador: pargibay 6150")
@@ -304,10 +308,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .strokeColor(Color.parseColor("#3ADF00"))
                 .strokeWidth(4)
                 .fillColor(Color.parseColor("#A440FFEF"));
-        Circle circle3 = mMap.addCircle(circleOptions3);
+        cir4 = mMap.addCircle(circleOptions3);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng3, 17));
 
-        mMap.addMarker(new MarkerOptions()
+        mlich = mMap.addMarker(new MarkerOptions()
                 .position(latLng3)
                 .title("Mision 4. Habla con el Rey Exánime")
                 .snippet("Objetivo: Reclutar ejército de muertos")
@@ -783,6 +787,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             txtqr.setText(retorno);
             qrpanda++;
             victoria++;
+            cir1.setVisible(false);
+            mpanda.setVisible(false);
             if (qrpanda >=2 ){
                 txtqr.setText("LOGRO YA CONOCIDO: "+retorno);
                 victoria--;
@@ -791,6 +797,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             txtqr.setText(retorno);
             qrcata++;
             victoria++;
+            cir2.setVisible(false);
+            mcata.setVisible(false);
             if (qrcata >=2 ){
                 txtqr.setText("LOGRO YA CONOCIDO: "+retorno);
                 victoria--;
@@ -799,6 +807,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             txtqr.setText(retorno);
             qrlich++;
             victoria++;
+            cir4.setVisible(false);
+            mlich.setVisible(false);
             if (qrlich >=2 ){
                 txtqr.setText("LOGRO YA CONOCIDO: "+retorno);
                 victoria--;
@@ -807,6 +817,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             txtqr.setText(retorno);
             qrlegion++;
             victoria++;
+            cir3.setVisible(false);
+            mlegion.setVisible(false);
             if (qrlegion >=2 ){
                 txtqr.setText("LOGRO YA CONOCIDO: "+retorno);
                 victoria--;
