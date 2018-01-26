@@ -141,7 +141,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         contexto = this.getApplicationContext();
 
         //cuenta atras para finalizar el juego
-        new CountDownTimer(10000, 1000) {
+        new CountDownTimer(2706900, 1000) {
 
             @SuppressLint({"DefaultLocale", "SetTextI18n"})
             public void onTick(long millisUntilFinished) {
@@ -156,6 +156,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @SuppressLint("SetTextI18n")
             public void onFinish() {
+                crono.setText("HA GANADO LA LEGION!");
                     Intent intent = new Intent(getApplicationContext(), WastedActivity.class);
                     startActivity(intent);
             }
