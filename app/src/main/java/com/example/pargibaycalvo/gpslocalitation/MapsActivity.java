@@ -168,6 +168,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
         }.start();
+
+        View noReset = getWindow().getDecorView();
+        int iuOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        noReset.setSystemUiVisibility(iuOptions);
     }
 
     @Override
